@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4760494354546716585}
   - component: {fileID: 4760494354546716584}
+  - component: {fileID: 7804180059909150532}
+  - component: {fileID: 1219374852235421802}
   m_Layer: 0
   m_Name: Green
   m_TagString: Untagged
@@ -84,3 +86,35 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &7804180059909150532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4760494354546716583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2e4bf20ae9839d43b1a0146cebed8a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  glowstickMaterial: {fileID: 2100000, guid: 98e24ab96d047da43b2226bb29cd69f6, type: 2}
+  spriteRenderer: {fileID: 4760494354546716584}
+  intensity: 1.2
+  thickness: 0.6
+--- !u!58 &1219374852235421802
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4760494354546716583}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.12
