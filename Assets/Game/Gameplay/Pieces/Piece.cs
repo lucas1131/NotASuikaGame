@@ -5,7 +5,9 @@ public partial class Piece : MonoBehaviour, IPiece, IEquatable<Piece>, IComparab
 
     Spawner spawner;
     Rigidbody2D rb;
+    Collider2D collider;
     int pieceId;
+    float gravityScale;
     bool isMerging;
     bool isInPlay;
 
@@ -13,21 +15,31 @@ public partial class Piece : MonoBehaviour, IPiece, IEquatable<Piece>, IComparab
 
     void Awake(){
         isMerging = false;
-        rb = GetComponent<Rigidbody2D>();
-        rb.mass *= (1f + pieceId)*10f;
-        SetGravityScale(0f);
+
+        // Make sure object has no physics before enabling physics -- just setting isKinematic still
+        collider = gameObject.GetComponent<Collider2D>();
+        collider.enabled = false;
+
+        rb = gameObject.GetComponent<Rigidbody2D>();
+        rb.isKinematic = true;
     }
 
     public void Setup(Spawner spawner, int pieceId, float gravityScale){
         this.spawner = spawner;
         this.pieceId = pieceId;
+        this.gravityScale = gravityScale;
 
-        SetGravityScale(gravityScale);
-        EnablePhysics(false);
+        rb.mass *= (1f + pieceId)*10f;
     }
 
     void SetGravityScale(float scale) => rb.gravityScale = scale;
-    void EnablePhysics(bool enable) => rb.isKinematic = !enable;
+    void EnablePhysics(bool enable) {
+        collider.enabled = enable;
+        // rb = gameObject.AddComponent<Rigidbody2D>();
+        rb.isKinematic = !enable;
+        SetGravityScale(gravityScale * (enable ? 1f : 0f));
+    }
+
     public void PlayPiece() {
         EnablePhysics(true);
         isInPlay = true;
