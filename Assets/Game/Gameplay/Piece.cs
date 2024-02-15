@@ -39,9 +39,6 @@ public class Piece : MonoBehaviour {
         isMerging = true;
         other.isMerging = true;
 
-        Debug.Log($"this is: {gameObject.name} other is: {other.gameObject.name}");
-        Debug.Log($"this id is: {PieceId} other id is: {other.PieceId}");
-
         Destroy(other.gameObject);
         Destroy(gameObject);
 

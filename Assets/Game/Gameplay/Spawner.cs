@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour {
 
-    [SerializeField, Range(0f, 2f)] float pieceSizeMultiplier = 0.6f; // maybe use pow instead of multiplier?
+    [SerializeField, Range(1f, 2f)] float pieceSizeFactor = 1.4f;
     [SerializeField] int listSize;
     [SerializeField] SelectorConfig config;
     [SerializeField] MouseController controller; // probably move this to some game manager to comunicate between these two
@@ -18,11 +18,10 @@ public class Spawner : MonoBehaviour {
         Vector3 positionOffset = new Vector3(2f, 0f, 0f);
 
         int pieceId = SelectNext();
-        Debug.Log($"Instantiating object at {transform.position + positionOffset}");
 
         Piece piece = Instantiate(config.prefabs[pieceId], transform.position, Quaternion.identity);
         piece.Setup(pieceId, this);
-        piece.gameObject.transform.localScale *= (pieceId*pieceSizeMultiplier + 1f);
+        piece.gameObject.transform.localScale *= Mathf.Pow(pieceSizeFactor, pieceId+1);
         controller.SetSpawner(this); // interface this
         controller.SetControlledObject(piece);
 
@@ -32,30 +31,27 @@ public class Spawner : MonoBehaviour {
             piece = Instantiate(prefab, transform.position + positionOffset, Quaternion.identity);
             piece.Setup(pieceId, this);
 
-            // maybe only scale piece when not in actual world/mouse? not on holder
-            // piece.gameObject.transform.localScale *= (pieceId*pieceSizeMultiplier + 1f);
             piece.transform.position = transform.position + positionOffset;
 
             piecesList.Add(piece);
-            positionOffset.y -= 0.5f; // todo convert this position to screen space position
+            positionOffset.y -= 0.5f; // TODO convert this position to screen space position for properly position -- TODO more: make a queue view/handler/whatever to do this
         }
     }
 
     public void SpawnPieceFromMerge(int pieceId, Vector3 position){
         if(pieceId >= config.GetHighestPieceId()) return; // this is last piece, probably need a piece merger who knows this to decouple this logic
 
-        Debug.Log($"Spawning piece with ID {pieceId}");
         Piece piece = Instantiate(config.prefabs[pieceId], position, Quaternion.identity);
         piece.Setup(pieceId, this);
         piece.SetGravityScale();
-        piece.gameObject.transform.localScale *= (pieceId*pieceSizeMultiplier + 1f);
+        piece.gameObject.transform.localScale *= Mathf.Pow(pieceSizeFactor, pieceId+1);
     }
 
     public Piece GetNextPiece(){
         Piece nextPiece = piecesList[0];
         piecesList.RemoveAt(0);
         nextPiece.gameObject.transform.position = transform.position;
-        nextPiece.gameObject.transform.localScale *= (nextPiece.PieceId*pieceSizeMultiplier + 1f);
+        nextPiece.gameObject.transform.localScale *= Mathf.Pow(pieceSizeFactor, nextPiece.PieceId+1);
         controller.SetControlledObject(nextPiece);
 
         ShiftListUp();

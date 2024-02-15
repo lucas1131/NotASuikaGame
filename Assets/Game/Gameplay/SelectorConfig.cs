@@ -7,5 +7,5 @@ public class SelectorConfig : ScriptableObject {
     public float[] chance;
     public Piece[] prefabs;
 
-    public int GetHighestPieceId() => prefabs.Length-1;
+    public int GetHighestPieceId() => prefabs.Length;
 }
