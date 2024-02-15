@@ -16,8 +16,7 @@ public class GameInitializer : MonoBehaviour {
 
     public void StartGame(){
         var merger = new PieceMergerManager(false);
-        merger.TestTriplet();
-        // ResetGame();
+        ResetGame();
     }
 
     public void EndGame(){}

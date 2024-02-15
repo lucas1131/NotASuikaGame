@@ -4,12 +4,17 @@ using UnityEngine;
 public partial class Piece : MonoBehaviour, IPiece, IEquatable<Piece>, IComparable<Piece> {
 
     public static bool operator == (Piece p1, Piece p2){
-        if (ReferenceEquals(p1, null) || ReferenceEquals(p2, null)) {
-        	return false;
+        bool isP1Null = ReferenceEquals(p1, null);
+        bool isP2Null = ReferenceEquals(p2, null);
+        bool areBothNull = isP1Null && isP2Null;
+        bool isOneNull = isP1Null || isP2Null;
+
+        if (areBothNull) {
+        	return true;
         }
 
-        if (ReferenceEquals(p1, p2)){
-            return true;
+        if(isOneNull){
+            return false;
         }
 
         return p1.pieceId == p2.pieceId;
@@ -17,8 +22,14 @@ public partial class Piece : MonoBehaviour, IPiece, IEquatable<Piece>, IComparab
 
     public static bool operator != (Piece p1, Piece p2) => !(p1 == p2);
 
+    public override bool Equals(object other){
+        Piece otherPiece = other as Piece;
+        if (otherPiece == null) return false;
+        return pieceId == otherPiece.pieceId;
+    }
+
 	public bool Equals(Piece other){
-        if (other is null) return false;
+        if (other == null) return false;
         return pieceId == other.pieceId;
     }
 

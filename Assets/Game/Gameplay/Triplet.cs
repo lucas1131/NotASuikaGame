@@ -5,7 +5,7 @@ using System;
     Triplet structure made to work with Sets -- maybe call this TripletSet? the order of the values
     doesn't matter for this structure, ie: triple(1, 2, 3) is the same as triple(3, 1, 2) and triple(3, 2, 1)
 */
-public sealed class Triplet<T> : IEquatable<Triplet<T>> where T : IEquatable<T> {
+public struct Triplet<T> : IEquatable<Triplet<T>> where T : IEquatable<T> {
 
     T v1;
     T v2;
@@ -15,6 +15,24 @@ public sealed class Triplet<T> : IEquatable<Triplet<T>> where T : IEquatable<T> 
         this.v1 = v1;
         this.v2 = v2;
         this.v3 = v3;
+    }
+
+    public bool AddValueOverNull(T val){
+        bool added = false;
+        if(ReferenceEquals(v1, null)){
+            v1 = val;
+            added = true;
+        }
+        if(ReferenceEquals(v2, null)){
+            v2 = val;
+            added = true;
+        }
+        if(ReferenceEquals(v3, null)){
+            v3 = val;
+            added = true;
+        }
+
+        return added;
     }
 
     public bool Contains(T val){

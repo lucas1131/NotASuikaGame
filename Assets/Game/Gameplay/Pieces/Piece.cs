@@ -22,8 +22,8 @@ public partial class Piece : MonoBehaviour, IPiece, IEquatable<Piece>, IComparab
         this.spawner = spawner;
         this.pieceId = pieceId;
 
-        // SetGravityScale(gravityScale);
-        // EnablePhysics(false);
+        SetGravityScale(gravityScale);
+        EnablePhysics(false);
     }
 
     void SetGravityScale(float scale) => rb.gravityScale = scale;
