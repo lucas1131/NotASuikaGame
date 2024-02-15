@@ -2,14 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Piece : MonoBehaviour {
+public class Piece : MonoBehaviour, IPiece {
 
     Spawner spawner;
-    int pieceId;
-    [SerializeField] float defaultGravityScale;
     Rigidbody2D rb;
+    int pieceId;
     bool isMerging;
-
+    bool isInPlay;
 
     public int PieceId { get => pieceId; }
 
@@ -18,23 +17,40 @@ public class Piece : MonoBehaviour {
         rb = GetComponent<Rigidbody2D>();
         rb.mass *= (1f + pieceId)*10f;
         SetGravityScale(0f);
-
     }
 
-    public void Setup(int pieceId, Spawner spawner, float defaultGravityScale=0.4f){
-        this.pieceId = pieceId;
+    public void Setup(Spawner spawner, int pieceId, float gravityScale){
         this.spawner = spawner;
-        this.defaultGravityScale = defaultGravityScale;
+        this.pieceId = pieceId;
+
+        SetGravityScale(gravityScale);
+        EnablePhysics(false);
     }
 
-    public void SetGravityScale() => rb.gravityScale = defaultGravityScale;
-    public void SetGravityScale(float scale) => rb.gravityScale = scale;
+    void SetGravityScale(float scale) => rb.gravityScale = scale;
+    void EnablePhysics(bool enable) => rb.isKinematic = !enable;
+    public void PlayPiece() {
+        EnablePhysics(true);
+        isInPlay = true;
+    }
+
+    public Vector3 GetPosition() => transform.position;
 
     // TODO dropped piece above lose plane
     // TODO create a piece merger who knows how many pieces there are in total so we dont merge the last pieces
+    // TODO better way to known when a piece is in play so we know
     void OnCollisionEnter2D(Collision2D collision){
         Piece other = collision.gameObject.GetComponent<Piece>();
-        if(other == null || other.pieceId != pieceId || isMerging || other.isMerging) return;
+        if(other == null || other.pieceId != pieceId) return;
+        Debug.Log("Both pieces have same id");
+
+        bool isAnyPieceMerging = isMerging | other.isMerging;
+        if(isAnyPieceMerging) return;
+        Debug.Log("Neither pieces are currently merging");
+
+        bool areBothPiecesInPlay = isInPlay & other.isInPlay;
+        if(!areBothPiecesInPlay) return;
+        Debug.Log("Both pieces are in play");
 
         isMerging = true;
         other.isMerging = true;

@@ -5,7 +5,7 @@ public static class WeightedRandom {
 	/* Get an random Index weighted by the weights array. This assumes all weights are bigger than 0,
 		otherwise behaviour is undefined.
 	*/
-	public static int GetIndex(float[] weights){
+	public static int SelectIndex(float[] weights){
 		if(weights == null || weights.Length == 0) return -1;
 
 		float totalWeight = 0;
