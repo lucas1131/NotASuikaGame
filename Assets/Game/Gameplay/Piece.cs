@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
-public class Piece : MonoBehaviour, IPiece {
+public partial class Piece : MonoBehaviour, IPiece, IEquatable<Piece>, IComparable<Piece> {
 
     Spawner spawner;
     Rigidbody2D rb;
@@ -23,8 +22,8 @@ public class Piece : MonoBehaviour, IPiece {
         this.spawner = spawner;
         this.pieceId = pieceId;
 
-        SetGravityScale(gravityScale);
-        EnablePhysics(false);
+        // SetGravityScale(gravityScale);
+        // EnablePhysics(false);
     }
 
     void SetGravityScale(float scale) => rb.gravityScale = scale;
@@ -42,15 +41,12 @@ public class Piece : MonoBehaviour, IPiece {
     void OnCollisionEnter2D(Collision2D collision){
         Piece other = collision.gameObject.GetComponent<Piece>();
         if(other == null || other.pieceId != pieceId) return;
-        Debug.Log("Both pieces have same id");
 
         bool isAnyPieceMerging = isMerging | other.isMerging;
         if(isAnyPieceMerging) return;
-        Debug.Log("Neither pieces are currently merging");
 
         bool areBothPiecesInPlay = isInPlay & other.isInPlay;
         if(!areBothPiecesInPlay) return;
-        Debug.Log("Both pieces are in play");
 
         isMerging = true;
         other.isMerging = true;
@@ -60,5 +56,9 @@ public class Piece : MonoBehaviour, IPiece {
 
         // TODO instantiate next piece -- need to ask spawner to instantiate?
         spawner.SpawnPieceFromMerge(pieceId+1, transform.position); // TODO need to make spawn position halfway between two pieces
+    }
+
+    public override string ToString(){
+        return pieceId.ToString();
     }
 }
