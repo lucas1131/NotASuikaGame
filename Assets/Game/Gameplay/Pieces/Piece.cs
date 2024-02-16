@@ -68,7 +68,6 @@ public partial class Piece : MonoBehaviour, IPiece, IEquatable<Piece>, IComparab
     }
 
     // TODO dropped piece above lose plane
-    // TODO create a piece merger who knows how many pieces there are in total so we dont merge the last pieces
     // TODO better way to known when a piece is in play so we know
     void OnCollisionEnter2D(Collision2D collision){
         Piece other = collision.gameObject.GetComponent<Piece>();
