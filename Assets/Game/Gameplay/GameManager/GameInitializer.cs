@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class GameInitializer : MonoBehaviour {
 
+    [SerializeField] GameObject rightWall;
+    [SerializeField] GameObject leftWall;
     [SerializeField] GameObject spawnerPosition;
+    [SerializeField] DeathPlane deathPlane;
     [SerializeField] GameConfig[] configs;
     [SerializeField] MouseController controllerPrefab; // Could load prefabs from asset database to support remote assets
     [SerializeField] GameManager gameManagerPrefab; // Could load prefabs from asset database to support remote assets
@@ -29,7 +32,7 @@ public class GameInitializer : MonoBehaviour {
         Spawner spawner = new Spawner(config, controller, merger, spawnerPosition.transform.position);
 
         gameManager.Setup(spawner);
-        controller.SetSpawner(spawner);
+        controller.Setup(spawner, deathPlane);
         spawner.SpawnInitialPieces();
     }
 

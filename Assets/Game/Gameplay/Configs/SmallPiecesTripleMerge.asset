@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 029fa592160ab284b8a338b1a85a3131, type: 3}
-  m_Name: DebugGame
+  m_Name: SmallPiecesTripleMerge
   m_EditorClassIdentifier: 
   gravityScale: 0.4
   pieceSizeFactor: 1.4
@@ -18,14 +18,14 @@ MonoBehaviour:
   allowTripleMerge: 1
   nextPiecesListSize: 4
   chance:
-  - 0.4
-  - 0.3
+  - 0.8
   - 0.2
-  - 0.1
-  - 2
-  - 6
-  - 3
-  - 1
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
   prefabs:
   - {fileID: 264378625, guid: ff5dd9a967fe36c45a8ea1b3f61e63ac, type: 3}
   - {fileID: 1402939892, guid: bb7b50b1098f70140861fe326694ff48, type: 3}

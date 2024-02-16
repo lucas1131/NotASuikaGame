@@ -24,7 +24,7 @@ public class Spawner : ISpawner {
         spawnedPiecesList = new List<Piece>();
     }
 
-    Piece Instantiate(Piece prefab, Vector3 origin, int order) {
+    Piece Instantiate(Piece prefab, Vector3 origin, int order, bool applyObjectScale) {
         if(spawnedPiecesList.Count >= maximumSpawnedObjects+1){
             // TODO notify game manager to lose game at this point
             return null;
@@ -41,6 +41,10 @@ public class Spawner : ISpawner {
             config.GravityScale
         );
 
+        if(applyObjectScale){
+            piece.ApplyScaleFactor();
+        }
+
         pieceListId++;
 
         spawnedPiecesList.Add(piece);
@@ -56,15 +60,13 @@ public class Spawner : ISpawner {
         Vector3 positionOffset = new Vector3(2f, 0f, 0f);
 
         int pieceOrder = SelectNext();
-        Piece piece = Instantiate(config.Prefabs[pieceOrder], spawnOrigin + positionOffset, pieceOrder);
-
-        controller.SetSpawner(this);
+        Piece piece = Instantiate(config.Prefabs[pieceOrder], spawnOrigin + positionOffset, pieceOrder, true);
         controller.SetControlledObject(piece);
 
         for(int i = 0; i < config.NextPiecesListSize; i++){
             pieceOrder = SelectNext();
             var prefab = config.Prefabs[pieceOrder];
-            piece = Instantiate(prefab, spawnOrigin + positionOffset, pieceOrder);
+            piece = Instantiate(prefab, spawnOrigin + positionOffset, pieceOrder, false);
 
             piece.Position = spawnOrigin + positionOffset;
 
@@ -85,8 +87,7 @@ public class Spawner : ISpawner {
     }
 
     public void SpawnPieceFromMerge(int pieceOrder, Vector3 position){
-
-        Piece piece = Instantiate(config.Prefabs[pieceOrder], position, pieceOrder);
+        Piece piece = Instantiate(config.Prefabs[pieceOrder], position, pieceOrder, true);
         if(piece == null) return;
 
         piece.PlayPiece();
@@ -96,11 +97,12 @@ public class Spawner : ISpawner {
         Piece nextPiece = nextPiecesList[0];
         nextPiecesList.RemoveAt(0);
         nextPiece.Position = spawnOrigin;
+        nextPiece.ApplyScaleFactor();
         controller.SetControlledObject(nextPiece);
 
         ShiftListUp();
         int pieceOrder = SelectNext();
-        Piece newPiece = Instantiate(config.Prefabs[pieceOrder], spawnOrigin, pieceOrder);
+        Piece newPiece = Instantiate(config.Prefabs[pieceOrder], spawnOrigin, pieceOrder, false);
         if(newPiece == null) {
             return null;
         }

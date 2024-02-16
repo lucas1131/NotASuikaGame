@@ -17,4 +17,5 @@ public interface IPiece {
 
 	void PlayPiece();
 	void DestroyPiece();
+    void ApplyScaleFactor();
 }

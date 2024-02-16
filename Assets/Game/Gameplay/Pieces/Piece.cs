@@ -11,6 +11,8 @@ public partial class Piece : MonoBehaviour, IPiece, IEquatable<Piece>, IComparab
 
     int pieceId;
     int pieceOrder;
+    float scaleFactor;
+    float massFactor;
     float gravity;
     bool isInPlay;
 
@@ -31,6 +33,7 @@ public partial class Piece : MonoBehaviour, IPiece, IEquatable<Piece>, IComparab
 
         rb = gameObject.GetComponent<Rigidbody2D>();
         rb.isKinematic = true;
+        rb.gravityScale = 0f;
     }
 
     void OnDestroy(){
@@ -50,10 +53,9 @@ public partial class Piece : MonoBehaviour, IPiece, IEquatable<Piece>, IComparab
         this.merger = merger;
         this.pieceId = pieceId;
         this.pieceOrder = pieceOrder;
+        this.scaleFactor = scaleFactor;
+        this.massFactor = massFactor;
         this.gravity = gravity;
-
-        transform.localScale *= Mathf.Pow(scaleFactor, pieceOrder+1);
-        rb.mass = (1f + pieceOrder)*massFactor;
     }
 
     void EnablePhysics(bool enable) {
@@ -65,6 +67,15 @@ public partial class Piece : MonoBehaviour, IPiece, IEquatable<Piece>, IComparab
     public void PlayPiece() {
         EnablePhysics(true);
         isInPlay = true;
+    }
+
+    public void DestroyPiece(){
+        Destroy(gameObject);
+    }
+
+    public void ApplyScaleFactor(){
+        transform.localScale *= Mathf.Pow(scaleFactor, pieceOrder+1);
+        rb.mass = (1f + pieceOrder)*massFactor;
     }
 
     // TODO dropped piece above lose plane
@@ -80,10 +91,6 @@ public partial class Piece : MonoBehaviour, IPiece, IEquatable<Piece>, IComparab
         if(!areBothPiecesInPlay) return;
 
         merger.RegisterPieces(this, other);
-    }
-
-    public void DestroyPiece(){
-        Destroy(gameObject);
     }
 
     public override string ToString(){

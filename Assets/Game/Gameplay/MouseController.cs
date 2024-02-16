@@ -8,15 +8,18 @@ public class MouseController : MonoBehaviour, IMouseController {
     [SerializeField] Piece piece;
     [SerializeField, Range(0.1f, 10f)] float maxSpeed = 3f;
     [SerializeField, Range(0f, 1f)] float smoothTime = 0.2f;
-    Spawner spawner;
+    ISpawner spawner;
+    IDeathPlane deathPlane;
     Vector2 velocity;
 
     public void SetControlledObject(Piece piece){
         this.piece = piece;
     }
 
-    public void SetSpawner(Spawner spawner){
+    public void Setup(ISpawner spawner, IDeathPlane deathPlane){
         this.spawner = spawner;
+        this.deathPlane = deathPlane;
+        deathPlane.Enable();
     }
 
     void Update(){
@@ -28,17 +31,17 @@ public class MouseController : MonoBehaviour, IMouseController {
         piece.gameObject.transform.position = Vector2.SmoothDamp(piece.gameObject.transform.position, target, ref velocity, smoothTime, maxSpeed);
 
         if(Input.GetMouseButtonDown(0)){
-            // drop piece
+            deathPlane.Disable();
             piece.PlayPiece();
             piece = null;
 
-            StartCoroutine(GetNextPiece());
+            StartCoroutine(DropAndGetNextPiece());
         }
     }
 
-    IEnumerator GetNextPiece(){
+    IEnumerator DropAndGetNextPiece(){
         yield return new WaitForSeconds(1f);
-        // TODO Lerp this piece moving into position during this time?
+        deathPlane.Enable();
         SetControlledObject(spawner.SpawnPiece());
     }
 }

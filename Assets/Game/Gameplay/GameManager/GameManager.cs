@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour {
 	static readonly int referenceFPS = 30;
 	static readonly float spf = 1/referenceFPS;
 
-	[SerializeField] float mergeSlackTime = spf * 3f;
+	[SerializeField] float mergeSlackTime = spf * 6f;
 	float elapsedTime;
 	ISpawner spawner;
 
