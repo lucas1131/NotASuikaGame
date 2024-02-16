@@ -639,7 +639,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1137753904
 Transform:
   m_ObjectHideFlags: 0
@@ -977,10 +977,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1137753904}
     m_Modifications:
-    - target: {fileID: 1688707979, guid: 423156c744c63e747947156688ce5ff1, type: 3}
-      propertyPath: m_Simulated
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 237907020139176724, guid: 423156c744c63e747947156688ce5ff1, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -1120,10 +1116,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1137753904}
     m_Modifications:
-    - target: {fileID: 164728974, guid: f4c14c3f279b7e043a44041a36097e24, type: 3}
-      propertyPath: m_Simulated
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1104896795182711564, guid: f4c14c3f279b7e043a44041a36097e24, type: 3}
       propertyPath: m_Name
       value: Pink
@@ -1181,10 +1173,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1137753904}
     m_Modifications:
-    - target: {fileID: 2132844123, guid: b67e2bebd09913646ac0d54077a69d7b, type: 3}
-      propertyPath: m_Simulated
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1956088589302975842, guid: b67e2bebd09913646ac0d54077a69d7b, type: 3}
       propertyPath: m_Name
       value: Gold
@@ -1242,10 +1230,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1137753904}
     m_Modifications:
-    - target: {fileID: 264378624, guid: ff5dd9a967fe36c45a8ea1b3f61e63ac, type: 3}
-      propertyPath: m_Simulated
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4310559757512538872, guid: ff5dd9a967fe36c45a8ea1b3f61e63ac, type: 3}
       propertyPath: m_Name
       value: Red
@@ -1303,10 +1287,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1137753904}
     m_Modifications:
-    - target: {fileID: 917591342, guid: 282ffd5c41d9d0346951ec6995ec7aed, type: 3}
-      propertyPath: m_Simulated
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4384648250458931696, guid: 282ffd5c41d9d0346951ec6995ec7aed, type: 3}
       propertyPath: m_Name
       value: Purple
@@ -1364,10 +1344,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1137753904}
     m_Modifications:
-    - target: {fileID: 650295724, guid: f8a66fcf7f4797d4f8032ebe582a6f3a, type: 3}
-      propertyPath: m_Simulated
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4760494354546716583, guid: f8a66fcf7f4797d4f8032ebe582a6f3a, type: 3}
       propertyPath: m_Name
       value: Green
@@ -1425,10 +1401,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1137753904}
     m_Modifications:
-    - target: {fileID: 1402939891, guid: bb7b50b1098f70140861fe326694ff48, type: 3}
-      propertyPath: m_Simulated
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5527342599706071183, guid: bb7b50b1098f70140861fe326694ff48, type: 3}
       propertyPath: m_Name
       value: Blue
@@ -1486,10 +1458,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1137753904}
     m_Modifications:
-    - target: {fileID: 1904275714, guid: 1de3ab2549848294a85c742c75b779bf, type: 3}
-      propertyPath: m_Simulated
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6582338423717969004, guid: 1de3ab2549848294a85c742c75b779bf, type: 3}
       propertyPath: m_Name
       value: Yellow
