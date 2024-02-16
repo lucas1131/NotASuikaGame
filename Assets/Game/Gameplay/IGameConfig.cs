@@ -7,5 +7,5 @@ public interface IGameConfig {
     float[] Chance { get; }
     Piece[] Prefabs { get; }
 
-    int GetHighestPieceId();
+    int GetHighestPieceOrder();
 }

@@ -21,5 +21,5 @@ public class GameConfig : ScriptableObject, IGameConfig {
     public float[] Chance => chance;
     public Piece[] Prefabs => prefabs;
 
-    public int GetHighestPieceId() => prefabs.Length;
+    public int GetHighestPieceOrder() => prefabs.Length;
 }

@@ -10,13 +10,13 @@ public class Spawner : ISpawner {
 
     IGameConfig config;
     IMouseController controller;
-    IPieceMergerManager merger;
+    IPieceMerger merger;
     Vector3 spawnOrigin;
 
     List<Piece> nextPiecesList;
     List<Piece> spawnedPiecesList;
 
-    public Spawner(IGameConfig config, IMouseController controller, IPieceMergerManager merger, Vector3 spawnOrigin){
+    public Spawner(IGameConfig config, IMouseController controller, IPieceMerger merger, Vector3 spawnOrigin){
         this.config = config;
         this.merger = merger;
         this.controller = controller;
@@ -75,10 +75,16 @@ public class Spawner : ISpawner {
 
     int SelectNext() => WeightedRandom.SelectIndex(config.Chance);
 
-    public void SpawnPieceFromMerge(int pieceOrder, Vector3 position){
-        if(pieceOrder >= config.GetHighestPieceId()) {
-            return; // this is last piece, probably need a piece merger who knows this to decouple this logic
+    public void ConsumeMerges(){
+
+        Triplet<Piece> triplet = merger.Consume();
+        while(triplet != null){
+            merger.Merge(this, triplet);
+            triplet = merger.Consume();
         }
+    }
+
+    public void SpawnPieceFromMerge(int pieceOrder, Vector3 position){
 
         Piece piece = Instantiate(config.Prefabs[pieceOrder], position, pieceOrder);
         if(piece == null) return;

@@ -25,10 +25,10 @@ public class GameInitializer : MonoBehaviour {
         controller = Instantiate<MouseController>(controllerPrefab);
         gameManager = Instantiate<GameManager>(gameManagerPrefab);
 
-        PieceMergerManager merger = new PieceMergerManager(config.AllowTripleMerge);
+        PieceMerger merger = new PieceMerger(config);
         Spawner spawner = new Spawner(config, controller, merger, spawnerPosition.transform.position);
 
-        gameManager.Setup(merger);
+        gameManager.Setup(spawner);
         controller.SetSpawner(spawner);
         spawner.SpawnInitialPieces();
     }

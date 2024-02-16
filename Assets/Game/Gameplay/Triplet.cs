@@ -5,16 +5,22 @@ using System;
     Triplet structure made to work with Sets -- maybe call this TripletSet? the order of the values
     doesn't matter for this structure, ie: triple(1, 2, 3) is the same as triple(3, 1, 2) and triple(3, 2, 1)
 */
-public struct Triplet<T> : IEquatable<Triplet<T>> where T : IEquatable<T> {
+public class Triplet<T> : IEquatable<Triplet<T>> where T : IEquatable<T> {
 
-    T v1;
-    T v2;
-    T v3;
+    public T v1;
+    public T v2;
+    public T v3;
 
     public Triplet(T v1, T v2, T v3){
         this.v1 = v1;
         this.v2 = v2;
         this.v3 = v3;
+    }
+
+    public Triplet(T v1, T v2){
+        this.v1 = v1;
+        this.v2 = v2;
+        this.v3 = default(T);
     }
 
     public bool AddValueOverNull(T val){

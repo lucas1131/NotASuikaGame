@@ -5,15 +5,16 @@ using UnityEngine;
 public class GameManager : MonoBehaviour {
 
 	int frameCounter;
-	IPieceMergerManager merger;
+	ISpawner spawner;
 
-	public void Setup(IPieceMergerManager merger){
-		this.merger = merger;
+	public void Setup(ISpawner spawner){
+		this.spawner = spawner;
 	}
 
 	void LateUpdate(){
 		if(frameCounter >= 3){
-			merger?.Merge();
+			spawner.ConsumeMerges();
 		}
+		frameCounter++;
 	}
 }

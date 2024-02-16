@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
-public class PieceMergerManager : IPieceMergerManager {
+public class PieceMerger : IPieceMerger {
 
+    IGameConfig config;
     bool allowTripleMerge;
     HashSet<Triplet<Piece>> mergeSet;
 
@@ -71,8 +73,9 @@ public class PieceMergerManager : IPieceMergerManager {
         // }
     }
 
-    public PieceMergerManager(bool allowTripleMerge){
-        this.allowTripleMerge = allowTripleMerge;
+    public PieceMerger(IGameConfig config){
+        this.config = config;
+        this.allowTripleMerge = config.AllowTripleMerge;
         mergeSet = new HashSet<Triplet<Piece>>();
     }
 
@@ -85,20 +88,64 @@ public class PieceMergerManager : IPieceMergerManager {
     }
 
     void RegisterForTripleMerge(Piece piece1, Piece piece2){
+        if(piece1.PieceOrder >= config.GetHighestPieceOrder()) {
+            return;
+        }
+
         foreach(Triplet<Piece> triplet in mergeSet){
             if(triplet.Contains(piece1)){
+                mergeSet.Remove(triplet);
                 triplet.AddValueOverNull(piece2);
+                mergeSet.Add(triplet);
+                Debug.Log($"Registering triplet {triplet} for triple merge");
+                return;
             } else if(triplet.Contains(piece2)){
+                mergeSet.Remove(triplet);
                 triplet.AddValueOverNull(piece1);
-            } // else case would be 4 way collision, we dont support this
+                mergeSet.Add(triplet);
+                Debug.Log($"Registering triplet {triplet} for triple merge");
+                return;
+            }
         }
+
+        mergeSet.Add(new Triplet<Piece>(piece1, piece2));
+        Debug.Log($"Registering triplet {new Triplet<Piece>(piece1, piece2)} for triple merge");
     }
 
     void RegisterForDoubleMerge(Piece piece1, Piece piece2){
-        mergeSet.Add(new Triplet<Piece>(piece1, piece2, null));
+        mergeSet.Add(new Triplet<Piece>(piece1, piece2));
+        Debug.Log($"Registering triplet {new Triplet<Piece>(piece1, piece2)} for double merge");
     }
 
-    public void Merge(){
+    public Triplet<Piece> Consume(){
+        // There isnt a simple way to just get any one element
+        foreach(var triplet in mergeSet){
+            mergeSet.Remove(triplet);
+            return triplet;
+        }
+        return null;
+    }
 
+    public void Merge(ISpawner spawner, Triplet<Piece> triplet){
+
+        // Double merge
+        Piece p1 = triplet.v1;
+        Piece p2 = triplet.v2;
+
+        bool isAnyMerging = p1.IsMerging & p2.IsMerging;
+        if(isAnyMerging) {
+            return;
+        }
+
+        p1.IsMerging = true;
+        p2.IsMerging = true;
+
+        // dont like this, the object is instantiated somewhere else but is destroyed here, its not consistent and easy to lose track of references this way
+        p1.DestroyPiece();
+        p2.DestroyPiece();
+
+        // TODO need to make spawn position halfway between two pieces
+        Vector3 position = (p1.Position + p2.Position)/2f;
+        spawner.SpawnPieceFromMerge(p1.PieceOrder+1, position);
     }
 }

@@ -4,23 +4,26 @@ using UnityEngine;
 public partial class Piece : MonoBehaviour, IPiece, IEquatable<Piece>, IComparable<Piece> {
 
     ISpawner spawner;
-    IPieceMergerManager merger;
+    IPieceMerger merger;
+
     Rigidbody2D rb;
     Collider2D collider;
+
     int pieceId;
     int pieceOrder;
     float gravity;
-    bool isMerging;
     bool isInPlay;
 
     public int PieceId => pieceId;
+    public int PieceOrder => pieceOrder;
     public Vector3 Position {
         get => transform.position;
         set => transform.position = value;
     }
+    public bool IsMerging { get; set; }
 
     void Awake(){
-        isMerging = false;
+        IsMerging = false;
 
         // Make sure object has no physics before enabling physics -- just setting isKinematic still
         collider = gameObject.GetComponent<Collider2D>();
@@ -36,7 +39,7 @@ public partial class Piece : MonoBehaviour, IPiece, IEquatable<Piece>, IComparab
 
     public void Setup(
         ISpawner spawner,
-        IPieceMergerManager merger,
+        IPieceMerger merger,
         int pieceId,
         int pieceOrder,
         float scaleFactor,
@@ -71,22 +74,17 @@ public partial class Piece : MonoBehaviour, IPiece, IEquatable<Piece>, IComparab
         Piece other = collision.gameObject.GetComponent<Piece>();
         if(other == null || other.pieceOrder != pieceOrder) return;
 
-        bool isAnyPieceMerging = isMerging | other.isMerging;
+        bool isAnyPieceMerging = IsMerging | other.IsMerging;
         if(isAnyPieceMerging) return;
 
         bool areBothPiecesInPlay = isInPlay & other.isInPlay;
         if(!areBothPiecesInPlay) return;
 
         merger.RegisterPieces(this, other);
-        isMerging = true;
-        other.isMerging = true;
+    }
 
-        // dont like this, the object is instantiated somewhere else but is destroyed here, its not consistent and easy to lose track of references this way
-        Destroy(other.gameObject);
+    public void DestroyPiece(){
         Destroy(gameObject);
-
-        // TODO instantiate next piece -- need to ask spawner to instantiate?
-        spawner.SpawnPieceFromMerge(pieceOrder+1, transform.position); // TODO need to make spawn position halfway between two pieces
     }
 
     public override string ToString(){

@@ -1,8 +1,9 @@
 using UnityEngine;
 
 public interface ISpawner {
-    public void SpawnInitialPieces();
-	void SpawnPieceFromMerge(int pieceId, Vector3 position);
+    void SpawnInitialPieces();
+    void SpawnPieceFromMerge(int pieceOrder, Vector3 position);
+	void ConsumeMerges();
 	Piece SpawnPiece();
 	void RemoveFromList(int id);
 }
