@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: DefaultGameTripleMerge
   m_EditorClassIdentifier: 
   gravityScale: 0.4
-  pieceSizeFactor: 1.4
-  pieceMassFactor: 2
+  pieceSizeFactor: 1.3
+  pieceMassFactor: 4
   allowTripleMerge: 1
   nextPiecesListSize: 4
   chance:

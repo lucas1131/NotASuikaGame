@@ -37,7 +37,7 @@ public partial class Piece : MonoBehaviour, IPiece, IEquatable<Piece>, IComparab
     }
 
     void OnDestroy(){
-        spawner.RemoveFromList(pieceOrder);
+        spawner?.RemoveFromList(pieceOrder);
     }
 
     public void Setup(

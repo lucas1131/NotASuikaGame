@@ -7,15 +7,18 @@ public class Glowsticks : MonoBehaviour {
 
     [SerializeField, Range(0f, 3f)] float intensity;
     [SerializeField, Range(0f, 1f)] float thickness;
-    [SerializeField, Range(0f, 10f)] float detailX;
-    [SerializeField, Range(0f, 10f)] float detailY;
+    [SerializeField, Range(0f, 10f)] float animationScaleX;
+    [SerializeField, Range(0f, 10f)] float animationScaleY;
+    [SerializeField, Range(0f, 10f)] float animationIntensity;
+    [SerializeField, Range(0f, 100f)] float animationTimescale;
 
     static readonly int intensityID = Shader.PropertyToID("_Intensity");
     static readonly int thicknessID = Shader.PropertyToID("_Thickness");
-    static readonly int detailLevelID = Shader.PropertyToID("_DetailLevel");
+    static readonly int animationID = Shader.PropertyToID("_AnimationSettings");
 
     void OnEnable() {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        UpdateMaterial();
     }
 
     void OnValidate(){
@@ -36,7 +39,7 @@ public class Glowsticks : MonoBehaviour {
         propertyBlock.SetFloat(intensityID, intensity);
         // Just scale down thickness a bit to make it easier to edit in editor
         propertyBlock.SetFloat(thicknessID, thickness/10f);
-        propertyBlock.SetVector(thicknessID, new Vector4(detailX, detailY, 0f, 0f));
+        propertyBlock.SetVector(animationID, new Vector4(animationScaleX, animationScaleY, animationIntensity, animationTimescale));
         spriteRenderer.SetPropertyBlock(propertyBlock);
     }
 }
