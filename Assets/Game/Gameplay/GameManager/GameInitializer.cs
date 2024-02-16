@@ -32,7 +32,7 @@ public class GameInitializer : MonoBehaviour {
         Spawner spawner = new Spawner(config, controller, merger, spawnerPosition.transform.position);
 
         gameManager.Setup(spawner);
-        controller.Setup(spawner, deathPlane);
+        controller.Setup(spawner, deathPlane, leftWall, rightWall);
         spawner.SpawnInitialPieces();
     }
 

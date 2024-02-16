@@ -24,10 +24,6 @@ public class PieceMerger : IPieceMerger {
     }
 
     void RegisterForTripleMerge(Piece piece1, Piece piece2){
-        if(piece1.PieceOrder >= config.GetHighestPieceOrder()) {
-            return;
-        }
-
         foreach(Triplet<Piece> triplet in mergeSet){
             if(triplet.Contains(piece1)){
 
@@ -93,6 +89,10 @@ public class PieceMerger : IPieceMerger {
             return;
         }
 
+        if(p1.PieceOrder+2 >= config.GetHighestPieceOrder()) {
+            return;
+        }
+
         bool isAnyMerging = p1.IsMerging & p2.IsMerging & p3.IsMerging;
         if(isAnyMerging) {
             return;
@@ -114,6 +114,10 @@ public class PieceMerger : IPieceMerger {
     void MergeDouble(ISpawner spawner, Triplet<Piece> triplet){
         Piece p1 = triplet.v1;
         Piece p2 = triplet.v2;
+
+        if(p1.PieceOrder+1 >= config.GetHighestPieceOrder()) {
+            return;
+        }
 
         bool isAnyMerging = p1.IsMerging & p2.IsMerging;
         if(isAnyMerging) {

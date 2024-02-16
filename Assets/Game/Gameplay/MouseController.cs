@@ -10,25 +10,36 @@ public class MouseController : MonoBehaviour, IMouseController {
     [SerializeField, Range(0f, 1f)] float smoothTime = 0.2f;
     ISpawner spawner;
     IDeathPlane deathPlane;
+    GameObject leftWall;
+    GameObject rightWall;
     Vector2 velocity;
 
     public void SetControlledObject(Piece piece){
         this.piece = piece;
     }
 
-    public void Setup(ISpawner spawner, IDeathPlane deathPlane){
+    // This setup for bounds is really bad but quick to do, we have no Interfaces for GameObjects to inject here
+    // and this is dependent on assigning things on editor instead of calculating the field boundaries
+    public void Setup(ISpawner spawner, IDeathPlane deathPlane, GameObject leftWall, GameObject rightWall){
         this.spawner = spawner;
         this.deathPlane = deathPlane;
+        this.leftWall = leftWall;
+        this.rightWall = rightWall;
         deathPlane.Enable();
     }
 
     void Update(){
         if(piece == null) return;
 
-        // TODO limit piece movement to inside game field boundaries
         float mouseX = Camera.main.ScreenToWorldPoint(Input.mousePosition).x;
-        Vector2 target = new Vector2(mouseX, piece.gameObject.transform.position.y);
-        piece.gameObject.transform.position = Vector2.SmoothDamp(piece.gameObject.transform.position, target, ref velocity, smoothTime, maxSpeed);
+        float rightBound = GetRightBound();
+        float leftBound = GetLeftBound();
+        if(mouseX > rightBound) mouseX = rightBound - piece.Radius;
+        if(mouseX < leftBound) mouseX = leftBound + piece.Radius;
+
+        Vector2 target = new Vector2(mouseX, piece.Position.y);
+
+        piece.Position = Vector2.SmoothDamp(piece.gameObject.transform.position, target, ref velocity, smoothTime, maxSpeed);
 
         if(Input.GetMouseButtonDown(0)){
             deathPlane.Disable();
@@ -37,6 +48,14 @@ public class MouseController : MonoBehaviour, IMouseController {
 
             StartCoroutine(DropAndGetNextPiece());
         }
+    }
+
+    float GetRightBound(){
+        return rightWall.transform.position.x - rightWall.transform.lossyScale.x;
+    }
+
+    float GetLeftBound(){
+        return leftWall.transform.position.x + leftWall.transform.lossyScale.x;
     }
 
     IEnumerator DropAndGetNextPiece(){

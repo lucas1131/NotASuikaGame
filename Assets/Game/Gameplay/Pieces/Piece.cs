@@ -7,7 +7,7 @@ public partial class Piece : MonoBehaviour, IPiece, IEquatable<Piece>, IComparab
     IPieceMerger merger;
 
     Rigidbody2D rb;
-    Collider2D collider;
+    CircleCollider2D collider;
 
     int pieceId;
     int pieceOrder;
@@ -22,13 +22,14 @@ public partial class Piece : MonoBehaviour, IPiece, IEquatable<Piece>, IComparab
         get => transform.position;
         set => transform.position = value;
     }
+    public float Radius => collider.radius * transform.lossyScale.x;
     public bool IsMerging { get; set; }
 
     void Awake(){
         IsMerging = false;
 
         // Make sure object has no physics before enabling physics -- just setting isKinematic still
-        collider = gameObject.GetComponent<Collider2D>();
+        collider = gameObject.GetComponent<CircleCollider2D>();
         collider.enabled = false;
 
         rb = gameObject.GetComponent<Rigidbody2D>();
@@ -78,8 +79,6 @@ public partial class Piece : MonoBehaviour, IPiece, IEquatable<Piece>, IComparab
         rb.mass = (1f + pieceOrder)*massFactor;
     }
 
-    // TODO dropped piece above lose plane
-    // TODO better way to known when a piece is in play so we know
     void OnCollisionEnter2D(Collision2D collision){
         Piece other = collision.gameObject.GetComponent<Piece>();
         if(other == null || other.pieceOrder != pieceOrder) return;

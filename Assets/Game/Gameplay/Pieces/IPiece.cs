@@ -3,7 +3,8 @@ using UnityEngine;
 public interface IPiece {
 	int PieceId { get; }
 	int PieceOrder { get; }
-	Vector3 Position { get; set; }
+    Vector3 Position { get; set; }
+	float Radius { get; }
 	bool IsMerging { get; set; }
 
     public void Setup(ISpawner spawner,
