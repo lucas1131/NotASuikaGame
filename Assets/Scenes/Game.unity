@@ -675,7 +675,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2e019cb12159a4446ab06b7b44940c73, type: 2}
   - {fileID: 11400000, guid: 980f60d32071e114f9c0d481dc57a1a0, type: 2}
   controllerPrefab: {fileID: 1199891408572819365, guid: 6ca8892c81fd40048a4e5f0c3352114e, type: 3}
-  selectedConfigOverride: 0
+  gameManagerPrefab: {fileID: 4589277766211763525, guid: 11d3e7916a99cdd4fac3cb63fee9af23, type: 3}
+  configOverride: 0
   applyOverride: 0
 --- !u!4 &917591339 stripped
 Transform:

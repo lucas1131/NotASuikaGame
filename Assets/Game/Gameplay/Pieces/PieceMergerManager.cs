@@ -1,12 +1,6 @@
 using System;
 using System.Collections.Generic;
 
-public interface IPieceMergerManager {
-
-}
-
-
-
 public class PieceMergerManager : IPieceMergerManager {
 
     bool allowTripleMerge;
@@ -104,11 +98,7 @@ public class PieceMergerManager : IPieceMergerManager {
         mergeSet.Add(new Triplet<Piece>(piece1, piece2, null));
     }
 
-    public void UnregisterPieces(Piece piece1, Piece piece2){
-
-    }
-
-    public void DoMerge(){
+    public void Merge(){
 
     }
 }
