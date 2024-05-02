@@ -4,10 +4,10 @@ using NSubstitute;
 using UnityEngine;
 using System.Collections.Generic;
 
-public class SpawnerTest
+public partial class SpawnerShould
 {
-
     ISpawner spawner;
+
     IGameConfig gameConfigMock;
     IMouseController mouseControllerMock;
     IPieceMerger pieceMergerMock;
@@ -32,87 +32,6 @@ public class SpawnerTest
             new Vector3(0f, 0f, 0f));
     }
 
-
-    #region SpawnInitialPieces tests
-
-    void GivenNewPieceIsInstantiated(IPieceController piece){
-        vcFactory.CreatePieceController(
-                Arg.Any<ISpawner>(),
-                Arg.Any<IPieceMerger>(),
-                Arg.Any<int>(),
-                Arg.Any<int>(),
-                Arg.Any<Vector3>(),
-                Arg.Any<float>(),
-                Arg.Any<float>(),
-                Arg.Any<float>(),
-                Arg.Any<bool>())
-            .Returns(piece);
-    }
-
-    void GivenRngSelectedPiece(int index) => rngMock.SelectIndex(Arg.Any<float[]>()).Returns(index);
-
-
-    (IPieceController, List<IPieceController>) WhenSpawningInitialPieces() => spawner.SpawnInitialPieces();
-
-    void ThenCurrentPieceShouldNotBeNull(IPieceController currentPiece)
-    {
-        currentPiece.Should().NotBeNull();
-    }
-
-    void ThenNextPiecesShouldHaveSize(List<IPieceController> nextPieces, int expectedSize)
-    {
-        nextPieces.Should().NotBeNull();
-        nextPieces.Count.Should().Be(expectedSize);
-    }
-
-    [Test]
-    public void SpawnInitialPieces()
-    {
-        GivenDefaultTripleMergeEnabledGameConfig();
-        // GivenNewPieceIsInstantiated(defaultTestPiece);
-        GivenRngSelectedPiece(0);
-
-        (IPieceController currentPiece, List<IPieceController> nextPieces) = WhenSpawningInitialPieces();
-
-        ThenCurrentPieceShouldNotBeNull(currentPiece);
-        ThenNextPiecesShouldHaveSize(nextPieces, 1);
-    }
-
-    #endregion
-
-    #region SpawnPieceFromMerge tests
-    [Test]
-    public void SpawnPieceFromMerge()
-    {
-        Assert.Fail();
-    }
-    #endregion
-
-    #region ConsumeMerges tests
-    [Test]
-    public void ConsumeMerges()
-    {
-        Assert.Fail();
-    }
-    #endregion
-
-    #region SpawnPiece tests
-    [Test]
-    public void SpawnPiece()
-    {
-        Assert.Fail();
-    }
-    #endregion
-
-    #region RemoveFromList tests
-    [Test]
-    public void RemoveFromList()
-    {
-        Assert.Fail();
-    }
-    #endregion
-
-    #region Mocked values
 
     void GivenDefaultTripleMergeEnabledGameConfig()
     {
@@ -154,6 +73,4 @@ public class SpawnerTest
             return gameObject.AddComponent<PieceGraphics>();
         }
     }
-
-    #endregion
 }

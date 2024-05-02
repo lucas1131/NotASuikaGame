@@ -25,7 +25,6 @@ public class Spawner : ISpawner
         IRng rng,
         Vector3 spawnOrigin)
     {
-
         this.config = config;
         this.merger = merger;
         this.controller = controller;
@@ -77,14 +76,14 @@ public class Spawner : ISpawner
         Vector3 positionOffset = new Vector3(2f, 0f, 0f);
 
         int pieceOrder = SelectNext();
-        IPieceController piece = Instantiate(config.Prefabs[pieceOrder], spawnOrigin + positionOffset, pieceOrder, true);
-        controller.SetControlledObject(piece);
+        IPieceController startingPiece = Instantiate(config.Prefabs[pieceOrder], spawnOrigin + positionOffset, pieceOrder, true);
+        controller.SetControlledObject(startingPiece);
 
         for (int i = 0; i < config.NextPiecesListSize; i++)
         {
             pieceOrder = SelectNext();
             var prefab = config.Prefabs[pieceOrder];
-            piece = Instantiate(prefab, spawnOrigin + positionOffset, pieceOrder, false);
+            IPieceController piece = Instantiate(prefab, spawnOrigin + positionOffset, pieceOrder, false);
 
             piece.Position = spawnOrigin + positionOffset;
 
@@ -92,7 +91,7 @@ public class Spawner : ISpawner
             positionOffset.y -= 0.5f; // TODO convert this position to screen space position for properly position -- TODO more: make a queue view/handler/whatever to do this
         }
 
-        return (piece, nextPiecesList);
+        return (startingPiece, nextPiecesList);
     }
 
     int SelectNext() => rng.SelectIndex(config.Chance);
