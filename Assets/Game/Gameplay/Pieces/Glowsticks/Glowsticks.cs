@@ -37,7 +37,7 @@ public class Glowsticks : MonoBehaviour {
         MaterialPropertyBlock propertyBlock = new MaterialPropertyBlock();
         spriteRenderer.GetPropertyBlock(propertyBlock);
         propertyBlock.SetFloat(intensityID, intensity);
-        // Just scale down thickness a bit to make it easier to edit in editor
+        // Just scale down thickness a bit to make it easier to change this in editor
         propertyBlock.SetFloat(thicknessID, thickness/10f);
         propertyBlock.SetVector(animationID, new Vector4(animationScaleX, animationScaleY, animationIntensity, animationTimescale));
         spriteRenderer.SetPropertyBlock(propertyBlock);

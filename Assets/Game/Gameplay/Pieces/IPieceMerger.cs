@@ -1,5 +1,5 @@
 public interface IPieceMerger {
-    void RegisterPieces(Piece piece1, Piece piece2);
-    void Merge(ISpawner spawner, Triplet<Piece> triplet);
-    Triplet<Piece> Consume();
+    void RegisterPieces(IPieceController piece1, IPieceController piece2);
+    void Merge(ISpawner spawner, Triplet<IPieceController> triplet);
+    Triplet<IPieceController> Consume();
 }

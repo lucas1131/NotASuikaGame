@@ -1,8 +1,7 @@
 using System;
 
-
 /*
-    Triplet structure made to work with Sets -- maybe call this TripletSet? the order of the values
+    Triplet structure made to work as a Set -- maybe call this TripletSet? the order of the values
     doesn't matter for this structure, ie: triple(1, 2, 3) is the same as triple(3, 1, 2) and triple(3, 2, 1)
 */
 public class Triplet<T> : IEquatable<Triplet<T>> where T : IEquatable<T> {

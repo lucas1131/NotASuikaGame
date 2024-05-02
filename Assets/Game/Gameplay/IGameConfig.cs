@@ -1,11 +1,12 @@
-public interface IGameConfig {
+public interface IGameConfig
+{
     float GravityScale { get; }
     float PieceSizeFactor { get; }
-    public float PieceMassFactor { get; }
-    public bool AllowTripleMerge { get; }
+    float PieceMassFactor { get; }
+    bool AllowTripleMerge { get; }
     int NextPiecesListSize { get; }
     float[] Chance { get; }
-    Piece[] Prefabs { get; }
+    PieceGraphics[] Prefabs { get; }
 
     int GetHighestPieceOrder();
 }

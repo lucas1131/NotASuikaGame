@@ -1,13 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DeathPlane : MonoBehaviour, IDeathPlane {
     void OnTriggerEnter2D(Collider2D collider){
-        Piece other = collider.gameObject.GetComponent<Piece>();
+        PieceGraphics other = collider.gameObject.GetComponent<PieceGraphics>();
         if(other == null) return;
 
-        // TODO make player actually lose
+        // TODO make player actually lose probably via game manager
         Debug.Log("Player lost");
     }
 

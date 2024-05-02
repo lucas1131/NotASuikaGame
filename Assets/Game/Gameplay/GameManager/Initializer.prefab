@@ -58,6 +58,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b4b6a7cd4968d64458381e9e86225882, type: 2}
   - {fileID: 11400000, guid: 6b7a0982415c1784f92ed131aaad1d60, type: 2}
   - {fileID: 11400000, guid: 980f60d32071e114f9c0d481dc57a1a0, type: 2}
+  prefabLibrary: {fileID: 11400000, guid: b7ce82911381cfa4ab2b648073324d63, type: 2}
   controllerPrefab: {fileID: 1199891408572819365, guid: 6ca8892c81fd40048a4e5f0c3352114e, type: 3}
   gameManagerPrefab: {fileID: 4589277766211763525, guid: 11d3e7916a99cdd4fac3cb63fee9af23, type: 3}
   configOverride: 4

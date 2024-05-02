@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour {
 
-	// worth to have this in config?
+	// Is it worth to move this to config?
 	static readonly int referenceFPS = 30;
-	static readonly float spf = 1/referenceFPS;
+	static readonly float secondsPerFrame = 1/referenceFPS;
 
-	[SerializeField] float mergeSlackTime = spf * 6f;
+	[SerializeField] float mergeSlackTime = secondsPerFrame * 6f;
 	float elapsedTime;
 	ISpawner spawner;
 
@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void LateUpdate(){
-		if(mergeSlackTime >= mergeSlackTime){
+		if(elapsedTime >= mergeSlackTime){
 			spawner.ConsumeMerges();
 			elapsedTime = 0f;
 		}

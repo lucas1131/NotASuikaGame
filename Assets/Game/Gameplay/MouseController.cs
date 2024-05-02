@@ -1,11 +1,10 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 // TODO can probably use new input system to deal with input events here
 public class MouseController : MonoBehaviour, IMouseController {
 
-    [SerializeField] Piece piece;
+    [SerializeField] IPieceController piece;
     [SerializeField, Range(0.1f, 10f)] float maxSpeed = 3f;
     [SerializeField, Range(0f, 1f)] float smoothTime = 0.2f;
     ISpawner spawner;
@@ -14,7 +13,7 @@ public class MouseController : MonoBehaviour, IMouseController {
     GameObject rightWall;
     Vector2 velocity;
 
-    public void SetControlledObject(Piece piece){
+    public void SetControlledObject(IPieceController piece){
         this.piece = piece;
     }
 
@@ -39,7 +38,7 @@ public class MouseController : MonoBehaviour, IMouseController {
 
         Vector2 target = new Vector2(mouseX, piece.Position.y);
 
-        piece.Position = Vector2.SmoothDamp(piece.gameObject.transform.position, target, ref velocity, smoothTime, maxSpeed);
+        piece.Position = Vector2.SmoothDamp(piece.Position, target, ref velocity, smoothTime, maxSpeed);
 
         if(Input.GetMouseButtonDown(0)){
             deathPlane.Disable();
