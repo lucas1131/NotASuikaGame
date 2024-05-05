@@ -28,7 +28,7 @@ public class PieceMerger : IPieceMerger
 
     void RegisterForTripleMerge(IPieceController piece1, IPieceController piece2)
     {
-        string mergeFailWarningMsg = "Pair ({0}, {1}) is already queued for merge.";
+        string mergeFailWarningMsg = "[PieceMerger] Pair ({0}, {1}) is already queued for merge.";
 
         foreach (Triplet<IPieceController> triplet in mergeSet)
         {
@@ -115,7 +115,6 @@ public class PieceMerger : IPieceMerger
         IPieceController p1 = triplet.v1;
         IPieceController p2 = triplet.v2;
         IPieceController p3 = triplet.v3;
-
         if (p1 == null)
         {
             MergeDouble(spawner, new Triplet<IPieceController>(triplet.v2, triplet.v3));
@@ -134,12 +133,14 @@ public class PieceMerger : IPieceMerger
 
         if (p1.Order + 2 >= config.GetHighestPieceOrder())
         {
+            logger.LogWarning($"[PieceMerger] Trying to merge triplet {triplet} (resulting order: {p1.Order + 2}) will exceeded maximum piece order ({config.GetHighestPieceOrder()})");
             return;
         }
 
-        bool isAnyMerging = p1.IsMerging & p2.IsMerging & p3.IsMerging;
+        bool isAnyMerging = p1.IsMerging || p2.IsMerging || p3.IsMerging;
         if (isAnyMerging)
         {
+            logger.LogWarning($"[PieceMerger] Trying to merge merge a piece (either {p1} or {p2}) that is already merging!");
             return;
         }
 
@@ -147,9 +148,9 @@ public class PieceMerger : IPieceMerger
         p2.IsMerging = true;
         p3.IsMerging = true;
 
-        p1.Destroy();
-        p2.Destroy();
-        p3.Destroy();
+        spawner.DestroyPiece(p1);
+        spawner.DestroyPiece(p2);
+        spawner.DestroyPiece(p3);
 
         Vector3 position = (p1.Position + p2.Position + p2.Position) / 3f;
         spawner.SpawnAndPlayPiece(p1.Order + 2, position);
@@ -157,17 +158,25 @@ public class PieceMerger : IPieceMerger
 
     void MergeDouble(ISpawner spawner, Triplet<IPieceController> triplet)
     {
+        if (triplet.v3 != null)
+        {
+            logger.LogWarning("[PieceMerger] Triplet has 3 pieces registered but merger is trying to merge double, third piece will be ignored");
+            triplet.v3 = null;
+        }
+
         IPieceController p1 = triplet.v1;
         IPieceController p2 = triplet.v2;
 
         if (p1.Order + 1 >= config.GetHighestPieceOrder())
         {
+            logger.LogWarning($"[PieceMerger] Trying to merge triplet {triplet} (resulting order: {p1.Order + 1}) will exceeded maximum piece order ({config.GetHighestPieceOrder()})");
             return;
         }
 
-        bool isAnyMerging = p1.IsMerging & p2.IsMerging;
+        bool isAnyMerging = p1.IsMerging || p2.IsMerging;
         if (isAnyMerging)
         {
+            logger.LogWarning($"[PieceMerger] Trying to merge merge a piece (either {p1} or {p2}) that is already merging!");
             return;
         }
 

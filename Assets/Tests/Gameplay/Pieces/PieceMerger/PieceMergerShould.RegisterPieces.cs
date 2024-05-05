@@ -4,8 +4,6 @@ using System.Linq;
 
 public partial class PieceMergerShould
 {
-    IPieceController GivenPiece(int id, int order) => CreateTestPiece(id, order);
-
     void WhenRegisteringPieces(IPieceController piece1, IPieceController piece2) =>
         merger.RegisterPieces(piece1, piece2);
 
