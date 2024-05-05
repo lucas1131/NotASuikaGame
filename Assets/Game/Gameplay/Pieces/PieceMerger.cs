@@ -1,33 +1,43 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PieceMerger : IPieceMerger {
-
+public class PieceMerger : IPieceMerger
+{
     IGameConfig config;
-    bool allowTripleMerge;
+    ILogger logger;
     HashSet<Triplet<IPieceController>> mergeSet;
 
-
-    public PieceMerger(IGameConfig config){
+    public PieceMerger(IGameConfig config, ILogger logger)
+    {
         this.config = config;
-        this.allowTripleMerge = config.AllowTripleMerge;
+        this.logger = logger;
         mergeSet = new HashSet<Triplet<IPieceController>>();
     }
 
-    public void RegisterPieces(IPieceController piece1, IPieceController piece2){
-        if(allowTripleMerge){
+    public void RegisterPieces(IPieceController piece1, IPieceController piece2)
+    {
+        if (config.AllowTripleMerge)
+        {
             RegisterForTripleMerge(piece1, piece2);
-        } else {
+        }
+        else
+        {
             RegisterForDoubleMerge(piece1, piece2);
         }
     }
 
-    void RegisterForTripleMerge(IPieceController piece1, IPieceController piece2){
-        foreach(Triplet<IPieceController> triplet in mergeSet){
-            if(triplet.Contains(piece1)){
+    void RegisterForTripleMerge(IPieceController piece1, IPieceController piece2)
+    {
+        string mergeFailWarningMsg = "Pair ({0}, {1}) is already queued for merge.";
 
-                if(triplet.Contains(piece2)){
+        foreach (Triplet<IPieceController> triplet in mergeSet)
+        {
+            // Triplet that has either piece 1 or 2, check if there is a null value to write the other piece onto
+            if (triplet.Contains(piece1))
+            {
+                if (triplet.Contains(piece2))
+                {
+                    logger.LogWarning(string.Format(mergeFailWarningMsg, piece1, piece2, piece1));
                     return;
                 }
 
@@ -36,9 +46,12 @@ public class PieceMerger : IPieceMerger {
                 mergeSet.Add(triplet);
                 return;
 
-            } else if(triplet.Contains(piece2)){
-
-                if(triplet.Contains(piece1)){
+            }
+            else if (triplet.Contains(piece2))
+            {
+                if (triplet.Contains(piece1))
+                {
+                    logger.LogWarning(string.Format(mergeFailWarningMsg, piece1, piece2, piece1));
                     return;
                 }
 
@@ -49,52 +62,84 @@ public class PieceMerger : IPieceMerger {
             }
         }
 
+        // Completely new triplet
         mergeSet.Add(new Triplet<IPieceController>(piece1, piece2));
     }
 
-    void RegisterForDoubleMerge(IPieceController piece1, IPieceController piece2){
+    void RegisterForDoubleMerge(IPieceController piece1, IPieceController piece2)
+    {
+        string mergeFailWarningMsg = "Cannot register pieces ({0}, {1}) for merging, {2} is already queued for merge in another set.";
+
+        foreach (Triplet<IPieceController> queuedPieces in mergeSet)
+        {
+            if (queuedPieces.Contains(piece1))
+            {
+                logger.LogWarning(string.Format(mergeFailWarningMsg, piece1, piece2, piece1));
+                return;
+            }
+            else if (queuedPieces.Contains(piece2))
+            {
+                logger.LogWarning(string.Format(mergeFailWarningMsg, piece1, piece2, piece2));
+                return;
+            }
+        }
+
         mergeSet.Add(new Triplet<IPieceController>(piece1, piece2));
     }
 
-    public Triplet<IPieceController> Consume(){
+    public Triplet<IPieceController> Consume()
+    {
         // There isnt a simple way to just get any one element
-        foreach(var triplet in mergeSet){
+        foreach (var triplet in mergeSet)
+        {
             mergeSet.Remove(triplet);
             return triplet;
         }
         return null;
     }
 
-    public void Merge(ISpawner spawner, Triplet<IPieceController> triplet){
-        if(allowTripleMerge){
+    public void Merge(ISpawner spawner, Triplet<IPieceController> triplet)
+    {
+        if (config.AllowTripleMerge)
+        {
             MergeTriple(spawner, triplet);
-        } else {
+        }
+        else
+        {
             MergeDouble(spawner, triplet);
         }
     }
 
-    void MergeTriple(ISpawner spawner, Triplet<IPieceController> triplet){
+    void MergeTriple(ISpawner spawner, Triplet<IPieceController> triplet)
+    {
         IPieceController p1 = triplet.v1;
         IPieceController p2 = triplet.v2;
         IPieceController p3 = triplet.v3;
 
-        if(p1 == null) {
+        if (p1 == null)
+        {
             MergeDouble(spawner, new Triplet<IPieceController>(triplet.v2, triplet.v3));
             return;
-        } else if(p2 == null) {
+        }
+        else if (p2 == null)
+        {
             MergeDouble(spawner, new Triplet<IPieceController>(triplet.v1, triplet.v3));
             return;
-        } else if(p3 == null) {
+        }
+        else if (p3 == null)
+        {
             MergeDouble(spawner, new Triplet<IPieceController>(triplet.v1, triplet.v2));
             return;
         }
 
-        if(p1.Order+2 >= config.GetHighestPieceOrder()) {
+        if (p1.Order + 2 >= config.GetHighestPieceOrder())
+        {
             return;
         }
 
         bool isAnyMerging = p1.IsMerging & p2.IsMerging & p3.IsMerging;
-        if(isAnyMerging) {
+        if (isAnyMerging)
+        {
             return;
         }
 
@@ -106,31 +151,39 @@ public class PieceMerger : IPieceMerger {
         p2.Destroy();
         p3.Destroy();
 
-        Vector3 position = (p1.Position + p2.Position + p2.Position)/3f;
-        spawner.SpawnPieceFromMerge(p1.Order+2, position);
+        Vector3 position = (p1.Position + p2.Position + p2.Position) / 3f;
+        spawner.SpawnAndPlayPiece(p1.Order + 2, position);
     }
 
-    void MergeDouble(ISpawner spawner, Triplet<IPieceController> triplet){
+    void MergeDouble(ISpawner spawner, Triplet<IPieceController> triplet)
+    {
         IPieceController p1 = triplet.v1;
         IPieceController p2 = triplet.v2;
 
-        if(p1.Order+1 >= config.GetHighestPieceOrder()) {
+        if (p1.Order + 1 >= config.GetHighestPieceOrder())
+        {
             return;
         }
 
         bool isAnyMerging = p1.IsMerging & p2.IsMerging;
-        if(isAnyMerging) {
+        if (isAnyMerging)
+        {
             return;
         }
 
+        // These IsMerging control variables dont have any effect the way the code is now, everything runs completely sync and this flag is set
+        // in the same method the pieces are destroyed. However, when I have animations for pieces being merged/destroyed, these animations will
+        // probably run async and these flags will become more useful.
         p1.IsMerging = true;
         p2.IsMerging = true;
 
-        // dont like this, the object is instantiated somewhere else but is destroyed here, its not consistent and easy to lose track of references this way
-        p1.Destroy();
-        p2.Destroy();
+        Vector3 position = (p1.Position + p2.Position) / 2f;
+        int newPieceOrder = p1.Order + 1;
 
-        Vector3 position = (p1.Position + p2.Position)/2f;
-        spawner.SpawnPieceFromMerge(p1.Order+1, position);
+        spawner.DestroyPiece(p1);
+        spawner.DestroyPiece(p2);
+        spawner.SpawnAndPlayPiece(newPieceOrder, position);
     }
+
+    public List<Triplet<IPieceController>> GetQueuedPieces() => new List<Triplet<IPieceController>>(mergeSet);
 }

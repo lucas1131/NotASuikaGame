@@ -69,6 +69,6 @@ public partial class PieceController : IPieceController {
 
     public override string ToString()
     {
-        return Order.ToString();
+        return $"[Piece id:{Id} order:{Order}]";
     }
 }

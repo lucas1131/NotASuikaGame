@@ -1,21 +1,28 @@
 using NUnit.Framework;
+using NSubstitute;
 using FluentAssertions;
 using UnityEngine;
 
 public partial class SpawnerShould
 {
-    IPieceController WhenSpawningPieceFromMerge(int pieceOrder) => spawner.SpawnPieceFromMerge(pieceOrder, Vector3.zero);
+    void GivenInstantiatedPieceHasOrder(IPieceController newPiece, int order) {
+        newPiece.Order.Returns(order);
+    }
+
+    IPieceController WhenSpawningPieceFromMerge(int pieceOrder) => spawner.SpawnAndPlayPiece(pieceOrder, Vector3.zero);
 
     void ThenPieceShouldHaveOrder(IPieceController piece, int order)
     {
-
+        piece.Order.Should().Be(order);
     }
 
     [Test]
-    public void SpawnPieceFromMerge()
+    public void SpawnAndPlayPieceWhenSpawnedFromMerge()
     {
         GivenGameConfigPiecesList();
-        GivenNewPieceIsInstantiated(defaultTestPieceController);
+        IPieceController newPiece = defaultTestPieceController;
+        GivenNewPieceIsInstantiated(newPiece);
+        GivenInstantiatedPieceHasOrder(newPiece, 2);
 
         // this should become properly testable when I implement a proper NextPiecesListQueue to handle these next pieces previews
         // even the RemoveFromList method should become testable then

@@ -13,7 +13,7 @@ public partial class SpawnerShould
     IRng rngMock;
 
     [SetUp]
-    public void SetupSpawner()
+    public void Setup()
     {
         gameConfigMock = Substitute.For<IGameConfig>();
         // Calling other mocks for the config will override its return value anyway, so its not much of a problem to
@@ -91,9 +91,6 @@ public partial class SpawnerShould
             IPieceController piece = Substitute.For<IPieceController>();
             piece.Id.Returns(_ => pieceIdGenerator());
             piece.Order.Returns(_ => pieceOrderGenerator());
-
-            // piece.Id.Returns(123);
-            // piece.Order.Returns(321);
             return piece;
         }
     }

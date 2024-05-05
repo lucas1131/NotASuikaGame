@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public partial class PieceController {
 
     public static bool operator == (PieceController p1, IPieceController p2){
@@ -8,24 +6,13 @@ public partial class PieceController {
         bool areBothNull = isP1Null && isP2Null;
         bool isOneNull = isP1Null || isP2Null;
 
-        if (areBothNull) {
-        	return true;
-        }
-
-        if(isOneNull){
-            return false;
-        }
+        if (areBothNull) return true;
+        if (isOneNull) return false;
 
         return p1.Id == p2.Id;
     }
 
     public static bool operator != (PieceController p1, IPieceController p2) => !(p1 == p2);
-
-    public override bool Equals(object other){
-        IPieceController otherPiece = other as IPieceController;
-        if (otherPiece == null) return false;
-        return Id == otherPiece.Id;
-    }
 
 	public bool Equals(IPieceController other){
         if (other == null) return false;

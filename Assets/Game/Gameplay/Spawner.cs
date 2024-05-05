@@ -89,12 +89,10 @@ public class Spawner : ISpawner
 
             piece.Position = spawnOrigin + positionOffset;
 
-            Debug.Log($"[Spawner.SpawnInitialPieces] Adding new piece {piece.Id} to nextPiecesList");
             nextPiecesList.Add(piece);
             positionOffset.y -= 0.5f; // TODO convert this position to screen space position for properly position -- TODO more: make a queue view/handler/whatever to do this
         }
 
-        Debug.Log($"[Spawner.SpawnInitialPieces] nextPiecesList size: {nextPiecesList.Count}");
         return (startingPiece, nextPiecesList);
     }
 
@@ -108,7 +106,7 @@ public class Spawner : ISpawner
         }
     }
 
-    public IPieceController SpawnPieceFromMerge(int pieceOrder, Vector3 position)
+    public IPieceController SpawnAndPlayPiece(int pieceOrder, Vector3 position)
     {
         IPieceController piece = SpawnPiece(config.Prefabs[pieceOrder], position, pieceOrder, true);
         piece?.Play();
@@ -135,6 +133,13 @@ public class Spawner : ISpawner
 
         return nextPiece;
     }
+
+    public void DestroyPiece(IPieceController piece){
+        RemoveFromList(piece.Id);
+        piece.Destroy();
+        piece = null;
+    }
+
 
     // TODO need a proper piece queue/list to do this
     void ShiftListUp()

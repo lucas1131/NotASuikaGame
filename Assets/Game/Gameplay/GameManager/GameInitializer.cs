@@ -26,14 +26,14 @@ public class GameInitializer : MonoBehaviour
     {
         GameConfig config = configs[applyOverride ? configOverride : configOverride];
 
-
         controller = Instantiate<MouseController>(controllerPrefab);
         gameManager = Instantiate<GameManager>(gameManagerPrefab);
 
+        ILogger logger = LoggerFactory.Create();
         IObjectInstantiator instantiator = new ObjectInstantiator();
         IViewControllerFactory vcFactory = new ViewControllerFactory(instantiator, prefabLibrary);
         IRng rng = new Rng();
-        IPieceMerger merger = new PieceMerger(config);
+        IPieceMerger merger = new PieceMerger(config, logger);
         ISpawner spawner = new Spawner(config, controller, merger, vcFactory, rng, spawnerPosition.transform.position);
 
         gameManager.Setup(spawner);

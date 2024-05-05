@@ -18,7 +18,7 @@ MonoBehaviour:
   allowTripleMerge: 1
   nextPiecesListSize: 4
   chance:
-  - 0.4
+  - 50
   - 0.3
   - 0.2
   - 0.1
