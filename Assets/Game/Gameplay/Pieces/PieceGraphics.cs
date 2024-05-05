@@ -5,11 +5,11 @@ public class PieceGraphics : MonoBehaviour, IPieceGraphics
     float gravity;
 
     Rigidbody2D rb;
-    CircleCollider2D collider;
+    CircleCollider2D circleCollider;
 
     IPieceController pieceController;
 
-    public float Radius => collider.radius * transform.lossyScale.x;
+    public float Radius => circleCollider.radius * transform.lossyScale.x;
     public Vector3 Position
     {
         get => transform.position;
@@ -19,7 +19,7 @@ public class PieceGraphics : MonoBehaviour, IPieceGraphics
     void Awake()
     {
         // Make sure object has no physics before enabling physics -- just setting isKinematic still
-        collider = gameObject.GetComponent<CircleCollider2D>();
+        circleCollider = gameObject.GetComponent<CircleCollider2D>();
         rb = gameObject.GetComponent<Rigidbody2D>();
         EnablePhysics(false);
     }
@@ -38,7 +38,7 @@ public class PieceGraphics : MonoBehaviour, IPieceGraphics
 
     public void EnablePhysics(bool enable)
     {
-        collider.enabled = enable;
+        circleCollider.enabled = enable;
         rb.isKinematic = !enable;
         rb.gravityScale = gravity * (enable ? 1f : 0f);
     }

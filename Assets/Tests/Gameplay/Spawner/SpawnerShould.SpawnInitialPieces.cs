@@ -1,28 +1,11 @@
 using NUnit.Framework;
 using FluentAssertions;
 using NSubstitute;
-using UnityEngine;
 using System.Collections.Generic;
 
 public partial class SpawnerShould
 {
-    void GivenNewPieceIsInstantiated(IPieceController piece)
-    {
-        vcFactory.CreatePieceController(
-                Arg.Any<ISpawner>(),
-                Arg.Any<IPieceMerger>(),
-                Arg.Any<int>(),
-                Arg.Any<int>(),
-                Arg.Any<Vector3>(),
-                Arg.Any<float>(),
-                Arg.Any<float>(),
-                Arg.Any<float>(),
-                Arg.Any<bool>())
-            .Returns(piece);
-    }
-
     void GivenRngSelectedPiece(int index) => rngMock.SelectIndex(Arg.Any<float[]>()).Returns(index);
-
 
     (IPieceController, List<IPieceController>) WhenSpawningInitialPieces() => spawner.SpawnInitialPieces();
 
@@ -43,7 +26,7 @@ public partial class SpawnerShould
     }
 
     [Test]
-    public void AttachNewPieceToController()
+    public void AttachNewPieceToControllerWhenSpawningPieces()
     {
         GivenDefaultTripleMergeEnabledGameConfig();
         GivenRngSelectedPiece(0);
@@ -62,6 +45,6 @@ public partial class SpawnerShould
 
         (IPieceController _, List<IPieceController> nextPiecesList) = WhenSpawningInitialPieces();
 
-        ThenNextPiecesShouldHaveSize(nextPiecesList, 1);
+        ThenNextPiecesShouldHaveSize(nextPiecesList, 2);
     }
 }

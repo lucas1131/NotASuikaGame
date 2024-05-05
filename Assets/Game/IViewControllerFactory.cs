@@ -2,7 +2,7 @@ using UnityEngine;
 
 public interface IViewControllerFactory
 {
-    IPieceController CreatePieceController(
+    IPieceController CreatePiece(
         ISpawner spawner,
         IPieceMerger merger,
         int pieceId,

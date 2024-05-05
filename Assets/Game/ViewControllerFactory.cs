@@ -15,7 +15,7 @@ public class ViewControllerFactory : IViewControllerFactory
         this.library = library;
     }
 
-    public IPieceController CreatePieceController(
+    public IPieceController CreatePiece(
         ISpawner spawner,
         IPieceMerger merger,
         int pieceId,
@@ -27,7 +27,12 @@ public class ViewControllerFactory : IViewControllerFactory
         bool enablePhysics
     ){
 
-        PieceGraphics pieceGraphics = instantiator.Instantiate<PieceGraphics>(library.piecesPrefabList[pieceOrder], position, Quaternion.identity);
+        PieceGraphics pieceGraphics = instantiator.Instantiate<PieceGraphics>(
+            library.piecesPrefabList[pieceOrder],
+            position,
+            Quaternion.identity
+        );
+
         PieceController pieceController = new PieceController(
             pieceGraphics,
             spawner,

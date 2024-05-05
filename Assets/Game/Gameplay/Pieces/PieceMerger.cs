@@ -89,7 +89,7 @@ public class PieceMerger : IPieceMerger {
             return;
         }
 
-        if(p1.PieceOrder+2 >= config.GetHighestPieceOrder()) {
+        if(p1.Order+2 >= config.GetHighestPieceOrder()) {
             return;
         }
 
@@ -102,19 +102,19 @@ public class PieceMerger : IPieceMerger {
         p2.IsMerging = true;
         p3.IsMerging = true;
 
-        p1.DestroyPiece();
-        p2.DestroyPiece();
-        p3.DestroyPiece();
+        p1.Destroy();
+        p2.Destroy();
+        p3.Destroy();
 
         Vector3 position = (p1.Position + p2.Position + p2.Position)/3f;
-        spawner.SpawnPieceFromMerge(p1.PieceOrder+2, position);
+        spawner.SpawnPieceFromMerge(p1.Order+2, position);
     }
 
     void MergeDouble(ISpawner spawner, Triplet<IPieceController> triplet){
         IPieceController p1 = triplet.v1;
         IPieceController p2 = triplet.v2;
 
-        if(p1.PieceOrder+1 >= config.GetHighestPieceOrder()) {
+        if(p1.Order+1 >= config.GetHighestPieceOrder()) {
             return;
         }
 
@@ -127,10 +127,10 @@ public class PieceMerger : IPieceMerger {
         p2.IsMerging = true;
 
         // dont like this, the object is instantiated somewhere else but is destroyed here, its not consistent and easy to lose track of references this way
-        p1.DestroyPiece();
-        p2.DestroyPiece();
+        p1.Destroy();
+        p2.Destroy();
 
         Vector3 position = (p1.Position + p2.Position)/2f;
-        spawner.SpawnPieceFromMerge(p1.PieceOrder+1, position);
+        spawner.SpawnPieceFromMerge(p1.Order+1, position);
     }
 }

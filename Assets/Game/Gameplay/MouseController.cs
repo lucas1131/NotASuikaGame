@@ -42,7 +42,7 @@ public class MouseController : MonoBehaviour, IMouseController {
 
         if(Input.GetMouseButtonDown(0)){
             deathPlane.Disable();
-            piece.PlayPiece();
+            piece.Play();
             piece = null;
 
             StartCoroutine(DropAndGetNextPiece());

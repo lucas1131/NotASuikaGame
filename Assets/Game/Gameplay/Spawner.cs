@@ -32,17 +32,20 @@ public class Spawner : ISpawner
         this.spawnOrigin = spawnOrigin;
         this.rng = rng;
         spawnedPiecesList = new List<IPieceController>();
+        nextPiecesList = new List<IPieceController>(config.NextPiecesListSize);
     }
 
-    IPieceController Instantiate(PieceGraphics prefab, Vector3 position, int order, bool applyObjectScale)
+    int SelectNext() => rng.SelectIndex(config.Chance);
+
+    IPieceController SpawnPiece(PieceGraphics prefab, Vector3 position, int order, bool applyObjectScale)
     {
-        if (spawnedPiecesList.Count >= maximumSpawnedObjects + 1)
+        if (spawnedPiecesList.Count > maximumSpawnedObjects)
         {
             // TODO notify game manager to lose game at this point
             return null;
         }
 
-        IPieceController piece = vcFactory.CreatePieceController(
+        IPieceController piece = vcFactory.CreatePiece(
             this,
             merger,
             pieceListId,
@@ -67,34 +70,33 @@ public class Spawner : ISpawner
 
     public void RemoveFromList(int id)
     {
-        spawnedPiecesList.RemoveAll(piece => piece.PieceId == id);
+        spawnedPiecesList.RemoveAll(piece => piece.Id == id);
     }
 
     public (IPieceController, List<IPieceController>) SpawnInitialPieces()
     {
-        nextPiecesList = new List<IPieceController>(config.NextPiecesListSize);
         Vector3 positionOffset = new Vector3(2f, 0f, 0f);
 
         int pieceOrder = SelectNext();
-        IPieceController startingPiece = Instantiate(config.Prefabs[pieceOrder], spawnOrigin + positionOffset, pieceOrder, true);
+        IPieceController startingPiece = SpawnPiece(config.Prefabs[pieceOrder], spawnOrigin, pieceOrder, true);
         controller.SetControlledObject(startingPiece);
 
         for (int i = 0; i < config.NextPiecesListSize; i++)
         {
             pieceOrder = SelectNext();
             var prefab = config.Prefabs[pieceOrder];
-            IPieceController piece = Instantiate(prefab, spawnOrigin + positionOffset, pieceOrder, false);
+            IPieceController piece = SpawnPiece(prefab, spawnOrigin + positionOffset, pieceOrder, false);
 
             piece.Position = spawnOrigin + positionOffset;
 
+            Debug.Log($"[Spawner.SpawnInitialPieces] Adding new piece {piece.Id} to nextPiecesList");
             nextPiecesList.Add(piece);
             positionOffset.y -= 0.5f; // TODO convert this position to screen space position for properly position -- TODO more: make a queue view/handler/whatever to do this
         }
 
+        Debug.Log($"[Spawner.SpawnInitialPieces] nextPiecesList size: {nextPiecesList.Count}");
         return (startingPiece, nextPiecesList);
     }
-
-    int SelectNext() => rng.SelectIndex(config.Chance);
 
     public void ConsumeMerges()
     {
@@ -106,12 +108,11 @@ public class Spawner : ISpawner
         }
     }
 
-    public void SpawnPieceFromMerge(int pieceOrder, Vector3 position)
+    public IPieceController SpawnPieceFromMerge(int pieceOrder, Vector3 position)
     {
-        IPieceController piece = Instantiate(config.Prefabs[pieceOrder], position, pieceOrder, true);
-        if (piece == null) return;
-
-        piece.PlayPiece();
+        IPieceController piece = SpawnPiece(config.Prefabs[pieceOrder], position, pieceOrder, true);
+        piece?.Play();
+        return piece ?? null;
     }
 
     public IPieceController SpawnPiece()
@@ -122,16 +123,15 @@ public class Spawner : ISpawner
         nextPiece.ApplyScaleFactor();
         controller.SetControlledObject(nextPiece);
 
-        ShiftListUp();
         int pieceOrder = SelectNext();
-        IPieceController newPiece = Instantiate(config.Prefabs[pieceOrder], spawnOrigin, pieceOrder, false);
-        if (newPiece == null)
-        {
-            return null;
-        }
+        IPieceController newPiece = SpawnPiece(config.Prefabs[pieceOrder], spawnOrigin, pieceOrder, false);
+
+        if (newPiece == null) return null;
 
         newPiece.Position = spawnOrigin + new Vector3(2f, config.NextPiecesListSize * -0.5f, 0f);
         nextPiecesList.Add(newPiece);
+
+        ShiftListUp();
 
         return nextPiece;
     }
@@ -142,9 +142,8 @@ public class Spawner : ISpawner
         Vector3 positionOffset = new Vector3(2f, 0f, 0f);
         foreach (var piece in nextPiecesList)
         {
-
             piece.Position = spawnOrigin + positionOffset;
-            positionOffset.y -= 0.5f; // todo convert this position to screen space position
+            positionOffset.y -= 0.5f;
         }
     }
 }

@@ -16,7 +16,7 @@ public partial class PieceController {
             return false;
         }
 
-        return p1.pieceId == p2.PieceId;
+        return p1.Id == p2.Id;
     }
 
     public static bool operator != (PieceController p1, IPieceController p2) => !(p1 == p2);
@@ -24,21 +24,21 @@ public partial class PieceController {
     public override bool Equals(object other){
         IPieceController otherPiece = other as IPieceController;
         if (otherPiece == null) return false;
-        return pieceId == otherPiece.PieceId;
+        return Id == otherPiece.Id;
     }
 
 	public bool Equals(IPieceController other){
         if (other == null) return false;
-        return pieceId == other.PieceId;
+        return Id == other.Id;
     }
 
     public override int GetHashCode(){
-        return pieceId;
+        return Id;
     }
 
     public int CompareTo(IPieceController other){
         // Make null behave as the biggest value to work with hash calculation later
         if (other == null) return -1;
-        return pieceId.CompareTo(other.PieceId);
+        return Id.CompareTo(other.Id);
     }
 }

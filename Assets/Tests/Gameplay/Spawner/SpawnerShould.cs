@@ -1,8 +1,6 @@
 using NUnit.Framework;
-using FluentAssertions;
 using NSubstitute;
 using UnityEngine;
-using System.Collections.Generic;
 
 public partial class SpawnerShould
 {
@@ -18,6 +16,10 @@ public partial class SpawnerShould
     public void SetupSpawner()
     {
         gameConfigMock = Substitute.For<IGameConfig>();
+        // Calling other mocks for the config will override its return value anyway, so its not much of a problem to
+        // start mocking this on Setup. This is needed just because we preallocate nextPieceListSize for performance
+        GivenDefaultTripleMergeEnabledGameConfig();
+
         mouseControllerMock = Substitute.For<IMouseController>();
         pieceMergerMock = Substitute.For<IPieceMerger>();
         vcFactory = Substitute.For<IViewControllerFactory>();
@@ -32,13 +34,28 @@ public partial class SpawnerShould
             new Vector3(0f, 0f, 0f));
     }
 
+    void GivenNewPieceIsInstantiated(IPieceController piece)
+    {
+        vcFactory.CreatePiece(
+                Arg.Any<ISpawner>(),
+                Arg.Any<IPieceMerger>(),
+                Arg.Any<int>(),
+                Arg.Any<int>(),
+                Arg.Any<Vector3>(),
+                Arg.Any<float>(),
+                Arg.Any<float>(),
+                Arg.Any<float>(),
+                Arg.Any<bool>())
+            .Returns(piece);
+    }
+
 
     void GivenDefaultTripleMergeEnabledGameConfig()
     {
         GivenTripleMergeEnabledGameConfig();
         GivenGameConfigPieceSizeFactor(1.4f);
         GivenGameConfigPieceMassFactor(1.4f);
-        GivenGameConfigNumberOfNextPiecesShown(1);
+        GivenGameConfigNumberOfNextPiecesShown(2);
         GivenGameConfigPiecesList();
     }
 
@@ -47,7 +64,7 @@ public partial class SpawnerShould
         GivenTripleMergeDisabledGameConfig();
         GivenGameConfigPieceSizeFactor(1.4f);
         GivenGameConfigPieceMassFactor(1.4f);
-        GivenGameConfigNumberOfNextPiecesShown(1);
+        GivenGameConfigNumberOfNextPiecesShown(2);
         GivenGameConfigPiecesList();
     }
 
@@ -58,11 +75,30 @@ public partial class SpawnerShould
     void GivenGameConfigNumberOfNextPiecesShown(int n) => gameConfigMock.NextPiecesListSize.Returns(n);
     void GivenGameConfigPiecesList()
     {
-        gameConfigMock.Prefabs.Returns(new PieceGraphics[] { defaultTestPiece });
+        gameConfigMock.Prefabs.Returns(new PieceGraphics[] { defaultTestPieceGraphics, defaultTestPieceGraphics, defaultTestPieceGraphics });
         gameConfigMock.Chance.Returns(new float[] { 100f });
     }
 
-    PieceGraphics defaultTestPiece
+    static int defaultTestPieceId;
+    static int pieceIdGenerator() => defaultTestPieceId++;
+    static int defaultTestPieceOrder;
+    static int pieceOrderGenerator() => defaultTestPieceOrder++;
+
+    IPieceController defaultTestPieceController
+    {
+        get
+        {
+            IPieceController piece = Substitute.For<IPieceController>();
+            piece.Id.Returns(_ => pieceIdGenerator());
+            piece.Order.Returns(_ => pieceOrderGenerator());
+
+            // piece.Id.Returns(123);
+            // piece.Order.Returns(321);
+            return piece;
+        }
+    }
+
+    PieceGraphics defaultTestPieceGraphics
     {
         get
         {

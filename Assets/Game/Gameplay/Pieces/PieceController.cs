@@ -2,8 +2,8 @@ using UnityEngine;
 
 public partial class PieceController : IPieceController {
 
-    public int PieceId => pieceId;
-    public int PieceOrder => pieceOrder;
+    public int Id => id;
+    public int Order => order;
     public float Radius => pieceGraphics.Radius;
     public Vector3 Position {
         get => pieceGraphics.Position;
@@ -15,8 +15,8 @@ public partial class PieceController : IPieceController {
     readonly IPieceGraphics pieceGraphics;
     readonly ISpawner spawner;
     readonly IPieceMerger merger;
-    readonly int pieceId;
-    readonly int pieceOrder;
+    readonly int id;
+    readonly int order;
     readonly float scaleFactor;
     readonly float massFactor;
 
@@ -24,44 +24,44 @@ public partial class PieceController : IPieceController {
         IPieceGraphics pieceGraphics,
         ISpawner spawner,
         IPieceMerger merger,
-        int pieceId,
-        int pieceOrder,
+        int id,
+        int order,
         float scaleFactor,
         float massFactor
     ){
         this.pieceGraphics = pieceGraphics;
         this.spawner = spawner;
         this.merger = merger;
-        this.pieceId = pieceId;
-        this.pieceOrder = pieceOrder;
+        this.id = id;
+        this.order = order;
         this.scaleFactor = scaleFactor;
         this.massFactor = massFactor;
 
         IsMerging = false;
     }
 
-    public void PlayPiece() {
+    public void Play() {
         pieceGraphics.EnablePhysics(true);
         IsInPlay = true;
     }
 
-    public void DestroyPiece(){
-        spawner.RemoveFromList(PieceOrder);
+    public void Destroy(){
+        spawner.RemoveFromList(Order);
         pieceGraphics.Destroy();
     }
 
     public void ApplyScaleFactor(){
-        pieceGraphics.ApplyScaleFactor(Mathf.Pow(scaleFactor, PieceOrder+1));
-        pieceGraphics.SetMass((1f + PieceOrder)*massFactor);
+        pieceGraphics.ApplyScaleFactor(Mathf.Pow(scaleFactor, Order+1));
+        pieceGraphics.SetMass((1f + Order)*massFactor);
     }
 
     public void OnCollision(IPieceController other){
-        if(other == null || other.PieceOrder != PieceOrder) return;
+        if(other == null || other.Order != Order) return;
 
-        bool isAnyPieceMerging = IsMerging | other.IsMerging;
+        bool isAnyPieceMerging = IsMerging || other.IsMerging;
         if(isAnyPieceMerging) return;
 
-        bool areBothPiecesInPlay = IsInPlay & other.IsInPlay;
+        bool areBothPiecesInPlay = IsInPlay && other.IsInPlay;
         if(!areBothPiecesInPlay) return;
 
         merger.RegisterPieces(this, other);
@@ -69,6 +69,6 @@ public partial class PieceController : IPieceController {
 
     public override string ToString()
     {
-        return PieceOrder.ToString();
+        return Order.ToString();
     }
 }
