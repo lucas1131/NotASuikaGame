@@ -2,15 +2,16 @@ using UnityEngine;
 
 public class GameInitializer : MonoBehaviour
 {
-
     [SerializeField] GameObject rightWall;
     [SerializeField] GameObject leftWall;
     [SerializeField] GameObject spawnerPosition;
     [SerializeField] DeathPlane deathPlane;
     [SerializeField] GameConfig[] configs;
-    [SerializeField] PrefabsLibrary prefabLibrary; // Could load prefabs from asset database to support remote assets
-    [SerializeField] MouseController controllerPrefab; // Could load prefabs from asset database to support remote assets
-    [SerializeField] GameManager gameManagerPrefab; // Could load prefabs from asset database to support remote assets
+
+    [SerializeField] PrefabsLibrary prefabLibrary; // Could load SO from addressables to support remote assets
+    [SerializeField] MouseController controllerPrefab; // Could load prefabs from addressables to support remote assets
+    [SerializeField] GameManager gameManagerPrefab; // Could load prefabs from addressables to support remote assets
+
     [SerializeField, Tooltip("Editor override for testing")] int configOverride;
     [SerializeField] bool applyOverride;
 
