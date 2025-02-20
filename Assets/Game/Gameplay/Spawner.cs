@@ -23,8 +23,8 @@ public class Spawner : ISpawner
         IPieceMerger merger,
         IViewControllerFactory vcFactory,
         IRng rng,
-        Vector3 spawnOrigin)
-    {
+        Vector3 spawnOrigin
+    ){
         this.config = config;
         this.merger = merger;
         this.controller = controller;

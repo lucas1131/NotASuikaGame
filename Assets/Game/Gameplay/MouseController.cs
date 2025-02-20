@@ -41,7 +41,7 @@ public class MouseController : MonoBehaviour, IMouseController {
         piece.Position = Vector2.SmoothDamp(piece.Position, target, ref velocity, smoothTime, maxSpeed);
 
         if(Input.GetMouseButtonDown(0)){
-            deathPlane.Disable();
+            // deathPlane.Disable();
             piece.Play();
             piece = null;
 
@@ -50,16 +50,16 @@ public class MouseController : MonoBehaviour, IMouseController {
     }
 
     float GetRightBound(){
-        return rightWall.transform.position.x - rightWall.transform.lossyScale.x;
+        return rightWall.transform.position.x - rightWall.transform.lossyScale.x/2.0f;
     }
 
     float GetLeftBound(){
-        return leftWall.transform.position.x + leftWall.transform.lossyScale.x;
+        return leftWall.transform.position.x + leftWall.transform.lossyScale.x/2.0f;
     }
 
     IEnumerator DropAndGetNextPiece(){
         yield return new WaitForSeconds(1f);
-        deathPlane.Enable();
+        // deathPlane.Enable();
         SetControlledObject(spawner.SpawnPiece());
     }
 }
