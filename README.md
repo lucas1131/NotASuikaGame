@@ -67,7 +67,6 @@ These typically are 1 liners that simply call the method you intend to test. The
 
 ```CSharp
 Triplet<IPieceController> WhenConsumingFromQueue() => merger.Consume();
-
 ```
 
 ### Then Methods
