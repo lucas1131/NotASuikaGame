@@ -1034,6 +1034,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 462968604188242050, guid: 4ce2fbbc1bba69d47831e9e4f37c3036, type: 3}
+      propertyPath: configOverride
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 462968604188242050, guid: 4ce2fbbc1bba69d47831e9e4f37c3036, type: 3}
+      propertyPath: configsLibrary
+      value: 
+      objectReference: {fileID: 11400000, guid: a86624231e7d7fb47b9c6484ad7ca052, type: 2}
     - target: {fileID: 462968604188242051, guid: 4ce2fbbc1bba69d47831e9e4f37c3036, type: 3}
       propertyPath: m_RootOrder
       value: 5

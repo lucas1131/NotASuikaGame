@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 029fa592160ab284b8a338b1a85a3131, type: 3}
   m_Name: SmallPieces
   m_EditorClassIdentifier: 
-  gravityScale: 0.4
-  pieceSizeFactor: 1.3
-  pieceMassFactor: 4
+  displayName: Small Pieces
+  gravityScale: 0.28
+  pieceSizeFactor: 1.15
+  pieceMassFactor: 2.3
   allowTripleMerge: 0
   nextPiecesListSize: 4
   chance:

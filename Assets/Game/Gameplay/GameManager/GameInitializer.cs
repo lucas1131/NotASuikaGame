@@ -6,7 +6,7 @@ public class GameInitializer : MonoBehaviour
     [SerializeField] GameObject leftWall;
     [SerializeField] GameObject spawnerPosition;
     [SerializeField] DeathPlane deathPlane;
-    [SerializeField] GameConfig[] configs;
+    [SerializeField] GameConfigLibrary configsLibrary;
 
     [SerializeField] PrefabsLibrary prefabLibrary; // Could load SO from addressables to support remote assets
     [SerializeField] MouseController controllerPrefab; // Could load prefabs from addressables to support remote assets
@@ -25,7 +25,7 @@ public class GameInitializer : MonoBehaviour
 
     public void StartGame()
     {
-        GameConfig config = configs[applyOverride ? configOverride : configOverride];
+        GameConfig config = configsLibrary.GetConfig(applyOverride ? configOverride : configsLibrary.selectedConfigIndex);
 
         controller = Instantiate<MouseController>(controllerPrefab);
         gameManager = Instantiate<GameManager>(gameManagerPrefab);
