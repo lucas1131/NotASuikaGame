@@ -1059,12 +1059,16 @@ PrefabInstance:
       objectReference: {fileID: 9582965}
     - target: {fileID: 462968604188242050, guid: 4ce2fbbc1bba69d47831e9e4f37c3036, type: 3}
       propertyPath: applyOverride
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 462968604188242050, guid: 4ce2fbbc1bba69d47831e9e4f37c3036, type: 3}
       propertyPath: endGameScreen
       value: 
       objectReference: {fileID: 568162470}
+    - target: {fileID: 462968604188242050, guid: 4ce2fbbc1bba69d47831e9e4f37c3036, type: 3}
+      propertyPath: configOverride
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 462968604188242051, guid: 4ce2fbbc1bba69d47831e9e4f37c3036, type: 3}
       propertyPath: m_RootOrder
       value: 5

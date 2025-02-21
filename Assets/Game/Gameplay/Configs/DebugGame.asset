@@ -16,7 +16,7 @@ MonoBehaviour:
   baseScore: 1000
   tripleMergeBonusFactor: 2
   gravityScale: 0.4
-  pieceSizeFactor: 1.15
+  pieceSizeFactor: 1.3
   pieceMassFactor: 4
   allowTripleMerge: 1
   nextPiecesListSize: 4
