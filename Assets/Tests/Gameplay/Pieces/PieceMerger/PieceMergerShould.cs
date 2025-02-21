@@ -8,6 +8,7 @@ public partial class PieceMergerShould
     IGameConfig gameConfigMock;
     ISpawner spawnerMock;
     ILogger loggerMock;
+    IScoreController scoreControllerMock;
 
     [SetUp]
     public void Setup()
@@ -15,8 +16,9 @@ public partial class PieceMergerShould
         gameConfigMock = Substitute.For<IGameConfig>();
         spawnerMock = Substitute.For<ISpawner>();
         loggerMock = Substitute.For<ILogger>();
+        scoreControllerMock = Substitute.For<IScoreController>();
 
-        merger = new PieceMerger(gameConfigMock, loggerMock);
+        merger = new PieceMerger(gameConfigMock, loggerMock, scoreControllerMock);
     }
 
     IPieceController GivenPiece(int id, int order)
@@ -32,5 +34,4 @@ public partial class PieceMergerShould
     void GivenTripleMergeDisabledGameConfig() => GivenTripleMergeGameConfig(false);
     void GivenTripleMergeEnabledGameConfig() => GivenTripleMergeGameConfig(true);
     void GivenGameConfigMaximumPieceOrderIs(int order) => gameConfigMock.GetHighestPieceOrder().Returns(8);
-
 }

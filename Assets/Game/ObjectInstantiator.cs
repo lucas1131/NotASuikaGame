@@ -7,6 +7,11 @@ public class ObjectInstantiator : IObjectInstantiator {
 		return Object.Instantiate(prefab);
 	}
 
+	public T Instantiate<T>(T prefab, Transform parent) where T : Object
+	{
+		return Object.Instantiate(prefab, parent);
+	}
+
 	public T Instantiate<T>(T prefab, Vector3 position, Quaternion rotation) where T : Object {
 		return Object.Instantiate(prefab, position, rotation);
 	}

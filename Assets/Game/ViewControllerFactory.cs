@@ -4,15 +4,19 @@ public class ViewControllerFactory : IViewControllerFactory
 {
 	// Naming conventions are: Graphics for world objects and View for UI elements, but the outcome is the same, separate logic from graphics/view
 
-    readonly IObjectInstantiator instantiator;
-    readonly PrefabsLibrary library;
+    private readonly IObjectInstantiator instantiator;
+    private readonly PrefabsLibrary library;
+    private readonly Canvas viewCanvas;
+    private readonly ScoreView scoreViewPrefab;
 
     static readonly string addressablePrefabPath = ""; // TODO: this should become addressables path to load so we can distribute whatever assets are necessary remotely
 
-    public ViewControllerFactory(IObjectInstantiator instantiator, PrefabsLibrary library)
+    public ViewControllerFactory(IObjectInstantiator instantiator, PrefabsLibrary library, Canvas viewCanvas, ScoreView scoreViewPrefab)
     {
         this.instantiator = instantiator;
         this.library = library;
+        this.viewCanvas = viewCanvas;
+        this.scoreViewPrefab = scoreViewPrefab;
     }
 
     public IPieceController CreatePiece(
@@ -44,6 +48,15 @@ public class ViewControllerFactory : IViewControllerFactory
         );
 
         pieceGraphics.Setup(pieceController, enablePhysics, gravity);
+
+        return pieceController;
+    }
+
+    public IScoreController CreateScoreController()
+    {
+        ScoreView scoreView = instantiator.Instantiate<ScoreView>(scoreViewPrefab, viewCanvas.gameObject.transform);
+
+        ScoreController pieceController = new ScoreController(scoreView);
 
         return pieceController;
     }

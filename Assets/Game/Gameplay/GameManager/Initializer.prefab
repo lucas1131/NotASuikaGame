@@ -50,18 +50,12 @@ MonoBehaviour:
   leftWall: {fileID: 462968604285597473}
   spawnerPosition: {fileID: 462968605267943601}
   deathPlane: {fileID: 462968604695589328}
-  configs:
-  - {fileID: 11400000, guid: 2e019cb12159a4446ab06b7b44940c73, type: 2}
-  - {fileID: 11400000, guid: 03679d84ea717694594b3bfd2e000d69, type: 2}
-  - {fileID: 11400000, guid: 8b17a64075fcf8e4e906ab80c304481f, type: 2}
-  - {fileID: 11400000, guid: 991195056b85c094f8f10a664cd33c18, type: 2}
-  - {fileID: 11400000, guid: b4b6a7cd4968d64458381e9e86225882, type: 2}
-  - {fileID: 11400000, guid: 6b7a0982415c1784f92ed131aaad1d60, type: 2}
-  - {fileID: 11400000, guid: 980f60d32071e114f9c0d481dc57a1a0, type: 2}
+  scoreViewPrefab: {fileID: 5689702643744547172, guid: a6a40231ac42b684f870b61158568161, type: 3}
+  configsLibrary: {fileID: 11400000, guid: a86624231e7d7fb47b9c6484ad7ca052, type: 2}
   prefabLibrary: {fileID: 11400000, guid: b7ce82911381cfa4ab2b648073324d63, type: 2}
   controllerPrefab: {fileID: 1199891408572819365, guid: 6ca8892c81fd40048a4e5f0c3352114e, type: 3}
   gameManagerPrefab: {fileID: 4589277766211763525, guid: 11d3e7916a99cdd4fac3cb63fee9af23, type: 3}
-  configOverride: 3
+  configOverride: 1
   applyOverride: 0
 --- !u!1 &462968605267943601
 GameObject:

@@ -1,12 +1,20 @@
+using System;
 using UnityEngine;
 
-public class DeathPlane : MonoBehaviour, IDeathPlane {
+public class DeathPlane : MonoBehaviour, IDeathPlane
+{
+    public event Action OnPlayerLost;
+
+    private void OnDestroy()
+    {
+        OnPlayerLost = null;
+    }
+
     void OnTriggerEnter2D(Collider2D collider){
         PieceGraphics other = collider.gameObject.GetComponent<PieceGraphics>();
         if(other == null) return;
 
-        // TODO make player actually lose probably via game manager
-        Debug.Log("Player lost");
+        OnPlayerLost?.Invoke();
     }
 
     public void Enable(){

@@ -21,8 +21,7 @@ public partial class SpawnerShould
 
     void ThenNextPiecesShouldHaveSize(List<IPieceController> nextPieces, int expectedSize)
     {
-        nextPieces.Should().NotBeNull();
-        nextPieces.Count.Should().Be(expectedSize);
+        nextPieces.Should().NotBeNull().And.HaveCount(expectedSize);
     }
 
     [Test]

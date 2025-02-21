@@ -2,10 +2,12 @@ using UnityEngine;
 
 public class GameInitializer : MonoBehaviour
 {
+    [SerializeField] Canvas viewCanvas;
     [SerializeField] GameObject rightWall;
     [SerializeField] GameObject leftWall;
     [SerializeField] GameObject spawnerPosition;
     [SerializeField] DeathPlane deathPlane;
+    [SerializeField] ScoreView scoreViewPrefab;
     [SerializeField] GameConfigLibrary configsLibrary;
 
     [SerializeField] PrefabsLibrary prefabLibrary; // Could load SO from addressables to support remote assets
@@ -32,11 +34,14 @@ public class GameInitializer : MonoBehaviour
 
         ILogger logger = LoggerFactory.Create();
         IObjectInstantiator instantiator = new ObjectInstantiator();
-        IViewControllerFactory vcFactory = new ViewControllerFactory(instantiator, prefabLibrary);
+        IViewControllerFactory vcFactory = new ViewControllerFactory(instantiator, prefabLibrary, viewCanvas, scoreViewPrefab);
+        IScoreController scoreController = vcFactory.CreateScoreController();
         IRng rng = new Rng();
-        IPieceMerger merger = new PieceMerger(config, logger);
+        IPieceMerger merger = new PieceMerger(config, logger, scoreController);
         ISpawner spawner = new Spawner(config, controller, merger, vcFactory, rng, spawnerPosition.transform.position);
-
+        
+        deathPlane.OnPlayerLost += EndGame;
+        deathPlane.OnPlayerLost += scoreController.HideScore;
         gameManager.Setup(spawner);
         controller.Setup(spawner, deathPlane, leftWall, rightWall);
         spawner.SpawnInitialPieces();

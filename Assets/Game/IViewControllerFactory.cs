@@ -12,4 +12,7 @@ public interface IViewControllerFactory
         float massFactor,
         float gravity,
         bool enablePhysics);
+
+    IScoreController CreateScoreController();
+
 }

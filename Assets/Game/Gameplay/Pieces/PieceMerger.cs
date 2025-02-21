@@ -5,12 +5,14 @@ public class PieceMerger : IPieceMerger
 {
     IGameConfig config;
     ILogger logger;
+    IScoreController scoreController;
     HashSet<Triplet<IPieceController>> mergeSet;
 
-    public PieceMerger(IGameConfig config, ILogger logger)
+    public PieceMerger(IGameConfig config, ILogger logger, IScoreController scoreController)
     {
         this.config = config;
         this.logger = logger;
+        this.scoreController = scoreController;
         mergeSet = new HashSet<Triplet<IPieceController>>();
     }
 
@@ -154,6 +156,8 @@ public class PieceMerger : IPieceMerger
 
         Vector3 position = (p1.Position + p2.Position + p2.Position) / 3f;
         spawner.SpawnAndPlayPiece(p1.Order + 2, position);
+
+        IncrementScore(p1.Order, 3);
     }
 
     void MergeDouble(ISpawner spawner, Triplet<IPieceController> triplet)
@@ -192,6 +196,13 @@ public class PieceMerger : IPieceMerger
         spawner.DestroyPiece(p1);
         spawner.DestroyPiece(p2);
         spawner.SpawnAndPlayPiece(newPieceOrder, position);
+        
+        IncrementScore(p1.Order, 2);
+    }
+
+    private void IncrementScore(int pieceOrder, int mergeCount)
+    {
+        scoreController.IncrementScore(config.BaseScore * (pieceOrder + mergeCount));
     }
 
     public List<Triplet<IPieceController>> GetQueuedPieces() => new List<Triplet<IPieceController>>(mergeSet);
