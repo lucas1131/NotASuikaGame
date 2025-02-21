@@ -5,6 +5,7 @@ public class GameConfig : ScriptableObject, IGameConfig
 {
     [SerializeField] string displayName = "Default Game";
     [SerializeField] int baseScore = 10;
+    [SerializeField] int tripleMergeBonusFactor = 1;
     [SerializeField] float gravityScale = 0.4f;
     [SerializeField] float pieceSizeFactor = 1.4f;
     [SerializeField] float pieceMassFactor = 1.4f;
@@ -15,6 +16,7 @@ public class GameConfig : ScriptableObject, IGameConfig
 
     public string DisplayName => displayName;
     public int BaseScore => baseScore;
+    public int TripleMergeBonusFactor => tripleMergeBonusFactor;
     public float GravityScale => gravityScale;
     public float PieceSizeFactor => pieceSizeFactor;
     public float PieceMassFactor => pieceMassFactor;

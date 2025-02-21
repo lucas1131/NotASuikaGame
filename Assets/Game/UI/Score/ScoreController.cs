@@ -6,6 +6,7 @@ public class ScoreController : IScoreController
     public ScoreController(IScoreView scoreView)
     {
         this.scoreView = scoreView;
+        this.scoreView.SetScore(0);
         this.score = 0;
         ShowScore();
     }

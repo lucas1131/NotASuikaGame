@@ -157,7 +157,7 @@ public class PieceMerger : IPieceMerger
         Vector3 position = (p1.Position + p2.Position + p2.Position) / 3f;
         spawner.SpawnAndPlayPiece(p1.Order + 2, position);
 
-        IncrementScore(p1.Order, 3);
+        IncrementScore(p1.Order, 3 + config.TripleMergeBonusFactor);
     }
 
     void MergeDouble(ISpawner spawner, Triplet<IPieceController> triplet)

@@ -2,6 +2,7 @@ public interface IGameConfig
 {
     float GravityScale { get; }
     int BaseScore { get; }
+    int TripleMergeBonusFactor { get; }
     float PieceSizeFactor { get; }
     float PieceMassFactor { get; }
     bool AllowTripleMerge { get; }

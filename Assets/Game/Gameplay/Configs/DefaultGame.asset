@@ -12,17 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 029fa592160ab284b8a338b1a85a3131, type: 3}
   m_Name: DefaultGame
   m_EditorClassIdentifier: 
+  displayName: Default Game
+  baseScore: 10
   gravityScale: 0.4
   pieceSizeFactor: 1.3
   pieceMassFactor: 4
   allowTripleMerge: 0
   nextPiecesListSize: 4
   chance:
-  - 0.57
+  - 0.47
   - 0.3
-  - 0.1
+  - 0.15
+  - 0.05
   - 0.03
-  - 0
   - 0
   - 0
   - 0
