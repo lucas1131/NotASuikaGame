@@ -75,7 +75,7 @@ public class Spawner : ISpawner
 
     public (IPieceController, List<IPieceController>) SpawnInitialPieces()
     {
-        Vector3 positionOffset = new Vector3(2f, 0f, 0f);
+        Vector3 positionOffset = new Vector3(1.9f, 0f, 0f);
 
         int pieceOrder = SelectNext();
         IPieceController startingPiece = SpawnPiece(config.Prefabs[pieceOrder], spawnOrigin, pieceOrder, true);
@@ -126,7 +126,7 @@ public class Spawner : ISpawner
 
         if (newPiece == null) return null;
 
-        newPiece.Position = spawnOrigin + new Vector3(2f, config.NextPiecesListSize * -0.5f, 0f);
+        newPiece.Position = spawnOrigin + new Vector3(1.9f, config.NextPiecesListSize * -0.5f, 0f);
         nextPiecesList.Add(newPiece);
 
         ShiftListUp();
@@ -140,11 +140,10 @@ public class Spawner : ISpawner
         piece = null;
     }
 
-
-    // TODO need a proper piece queue/list to do this
+    // TODO need a proper piece queue/list viewcontroller to do this
     void ShiftListUp()
     {
-        Vector3 positionOffset = new Vector3(2f, 0f, 0f);
+        Vector3 positionOffset = new Vector3(1.9f, 0f, 0f);
         foreach (var piece in nextPiecesList)
         {
             piece.Position = spawnOrigin + positionOffset;
