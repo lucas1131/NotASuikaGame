@@ -11,6 +11,14 @@ public class ScoreController : IScoreController
         ShowScore();
     }
 
+    public int Score => score;
+
+    public void SetScore(int score)
+    {
+        this.score = score;
+        scoreView.SetScore(score);
+    }
+
     public void IncrementScore(int amount)
     {
         score += amount;
@@ -26,11 +34,4 @@ public class ScoreController : IScoreController
     {
         scoreView.SetActive(false);
     }
-}
-
-public interface IScoreController
-{
-    void IncrementScore(int amount);
-    void ShowScore();
-    void HideScore();
 }

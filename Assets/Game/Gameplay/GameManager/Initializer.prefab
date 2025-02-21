@@ -46,16 +46,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ecb3c1d4e149f347b7f7cfd99fdd302, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  viewCanvas: {fileID: 0}
   rightWall: {fileID: 462968605001846899}
   leftWall: {fileID: 462968604285597473}
   spawnerPosition: {fileID: 462968605267943601}
   deathPlane: {fileID: 462968604695589328}
   scoreViewPrefab: {fileID: 5689702643744547172, guid: a6a40231ac42b684f870b61158568161, type: 3}
   configsLibrary: {fileID: 11400000, guid: a86624231e7d7fb47b9c6484ad7ca052, type: 2}
+  endGameScreen: {fileID: 0}
   prefabLibrary: {fileID: 11400000, guid: b7ce82911381cfa4ab2b648073324d63, type: 2}
   controllerPrefab: {fileID: 1199891408572819365, guid: 6ca8892c81fd40048a4e5f0c3352114e, type: 3}
   gameManagerPrefab: {fileID: 4589277766211763525, guid: 11d3e7916a99cdd4fac3cb63fee9af23, type: 3}
-  configOverride: 1
+  configOverride: 6
   applyOverride: 0
 --- !u!1 &462968605267943601
 GameObject:

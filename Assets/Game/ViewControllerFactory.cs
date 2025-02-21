@@ -56,8 +56,8 @@ public class ViewControllerFactory : IViewControllerFactory
     {
         ScoreView scoreView = instantiator.Instantiate<ScoreView>(scoreViewPrefab, viewCanvas.gameObject.transform);
 
-        ScoreController pieceController = new ScoreController(scoreView);
+        ScoreController scoreViewController = new ScoreController(scoreView);
 
-        return pieceController;
+        return scoreViewController;
     }
 }

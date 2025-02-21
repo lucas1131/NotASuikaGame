@@ -62,4 +62,14 @@ public class MouseController : MonoBehaviour, IMouseController {
         deathPlane.Enable();
         SetControlledObject(spawner.SpawnPiece());
     }
+
+    public void EnableControls()
+    {
+        enabled = true;
+    }
+    
+    public void DisableControls()
+    {
+        enabled = false;
+    }
 }
